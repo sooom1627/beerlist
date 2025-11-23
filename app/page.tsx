@@ -52,9 +52,9 @@ export default function Home() {
             <Instagram className="w-5 h-5 text-gray-700 dark:text-gray-300" />
           </Link>
           <ThemeSwitcher />
-          <Suspense>
-            <AuthButton />
-          </Suspense>
+          <Link href="/admin" className="flex items-center justify-center p-2 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"> 
+          <span className="text-sm font-medium  text-zinc-500 dark:text-zinc-400 underline whitespace-nowrap">管理者用画面</span>
+          </Link>
         </div>
       </footer>
     </main>
