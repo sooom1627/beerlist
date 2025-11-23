@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useBeers } from "../hooks/useBeers";
 import {
   Card,
@@ -55,7 +56,7 @@ export function BeerList() {
   return (
     <div className="w-full max-w-4xl mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {beerSlots?.map((beer) => {
+        {beerSlots?.map((beer, index) => {
           if (!beer) return null;
           
           return (
@@ -72,11 +73,16 @@ export function BeerList() {
                   {/* Image: 枠線を消してシンプルに */}
                   <div className="flex-shrink-0 w-16 h-16 flex items-center justify-center p-1 bg-white dark:bg-zinc-900 rounded-sm shadow-sm">
                     {beer.image ? (
-                      <img
-                        src={beer.image}
-                        alt={beer.name}
-                        className="w-full h-full object-contain mix-blend-multiply bg-white  dark:mix-blend-normal rounded-sm p-0.5"
-                      />
+                      <div className="relative w-full h-full">
+                        <Image
+                          src={beer.image}
+                          alt={beer.name}
+                          fill
+                          sizes="64px"
+                          className="object-contain mix-blend-multiply bg-white dark:mix-blend-normal rounded-sm p-0.5"
+                          priority={index < 4}
+                        />
+                      </div>
                     ) : (
                       <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800 rounded-sm" />
                     )}
@@ -131,7 +137,10 @@ export function BeerList() {
               </CardContent>
 
               {/* Tap Number: よりアーティスティックに配置 */}
-              <span className="absolute -top-2 -right-2 text-[8rem] leading-none font-black text-zinc-200/80 dark:text-zinc-800/80 -z-10 select-none pointer-events-none">
+              <span 
+                className="absolute -top-2 -right-2 text-[8rem] leading-none font-black text-zinc-200/80 dark:text-zinc-800/80 -z-10 select-none pointer-events-none"
+                aria-hidden="true"
+              >
                 {beer.tapNumber}
               </span>
             </Card>
