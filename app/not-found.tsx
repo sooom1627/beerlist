@@ -1,13 +1,9 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Suspense } from "react";
 
 export default function NotFound() {
   return (
-    <Suspense>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-[#0a0a0a] px-4 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] dark:bg-[#0a0a0a] px-4 text-center">
       <div className="space-y-6 max-w-md mx-auto">
         <div className="flex flex-col items-center space-y-2">
           <h1 className="text-8xl font-black tracking-tighter text-zinc-200 dark:text-zinc-800 select-none">
@@ -31,8 +27,7 @@ export default function NotFound() {
           </Button>
         </div>
       </div>
-      </div>
-    </Suspense>
+    </div>
   );
 }
 

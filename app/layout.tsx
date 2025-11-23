@@ -34,12 +34,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" suppressHydrationWarning>
-      <Suspense>
-        <Analytics />
-      </Suspense>
-      <Suspense>
-        <SpeedInsights />
-      </Suspense>
       <body className={`${geistSans.className} antialiased`}>
         <script
           type="application/ld+json"
@@ -53,6 +47,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Suspense>
+              <Analytics />
+              <SpeedInsights />
+            </Suspense>
           </ThemeProvider>
         </QueryProvider>
       </body>
