@@ -44,7 +44,7 @@ export function BeerList() {
   if (isLoading) {
     // Loading stateもミニマルに
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 py-12 space-y-4">
+      <div className="w-full max-w-4xl mx-auto px-2 py-12 space-y-4">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="h-32 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-sm" />
         ))}
@@ -75,7 +75,7 @@ export function BeerList() {
                       <img
                         src={beer.image}
                         alt={beer.name}
-                        className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                        className="w-full h-full object-contain mix-blend-multiply bg-white  dark:mix-blend-normal rounded-sm p-0.5"
                       />
                     ) : (
                       <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800 rounded-sm" />
@@ -84,7 +84,7 @@ export function BeerList() {
 
                   <div className="flex-1 min-w-0 space-y-1">
                     <div className="flex items-baseline justify-between">
-                       <CardTitle className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50 line-clamp-1">
+                      <CardTitle className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50 line-clamp-1">
                         {beer.name}
                       </CardTitle>
                     </div>
