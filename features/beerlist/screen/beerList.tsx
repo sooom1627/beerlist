@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const beerList: BeerListType = [
+export const beerList: BeerListType = [
   {
     id: 1,
     image:
