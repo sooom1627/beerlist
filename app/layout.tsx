@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -32,9 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <Analytics />
-      <SpeedInsights />
+    <html lang="ja" suppressHydrationWarning>
+      <Suspense>
+        <Analytics />
+      </Suspense>
+      <Suspense>
+        <SpeedInsights />
+      </Suspense>
       <body className={`${geistSans.className} antialiased`}>
         <script
           type="application/ld+json"
