@@ -1,38 +1,106 @@
-import { redirect } from "next/navigation";
+"use client";
 
-import { createClient } from "@/lib/supabase/server";
-import { InfoIcon } from "lucide-react";
-import { Suspense } from "react";
+import { useState } from "react";
+import { BeerSlotCard } from "@/features/beerlist/components/beer-slot-card";
+import { BeerForm } from "@/features/beerlist/components/beer-form";
+import type { Beer } from "@/features/beerlist/types/beers.types";
+import type { BeerFormData } from "@/features/beerlist/types/beer-form.types";
+import { beerList as initialBeerList } from "@/features/beerlist/screen/beerList";
 
-async function UserDetails() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
-
-  if (error || !data?.claims) {
-    redirect("/auth/login");
-  }
-
-  return JSON.stringify(data.claims, null, 2);
-}
+const MAX_SLOTS = 8;
 
 export default function AdminPage() {
+  const [beerSlots, setBeerSlots] = useState<(Beer | null)[]>(() => {
+    const slots: (Beer | null)[] = Array(MAX_SLOTS).fill(null);
+    initialBeerList.forEach((beer, index) => {
+      if (index < MAX_SLOTS) {
+        slots[index] = beer;
+      }
+    });
+    return slots;
+  });
+
+  const [editingSlotIndex, setEditingSlotIndex] = useState<number | null>(null);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const handleToggleAvailability = (slotIndex: number) => {
+    setBeerSlots((prev) => {
+      const newSlots = [...prev];
+      if (newSlots[slotIndex]) {
+        newSlots[slotIndex] = {
+          ...newSlots[slotIndex]!,
+          isAvailable: !newSlots[slotIndex]!.isAvailable,
+        };
+      }
+      return newSlots;
+    });
+  };
+
+  const handleEdit = (slotIndex: number) => {
+    setEditingSlotIndex(slotIndex);
+    setIsFormOpen(true);
+  };
+
+  const handleFormSubmit = (data: BeerFormData) => {
+    if (editingSlotIndex !== null) {
+      setBeerSlots((prev) => {
+        const newSlots = [...prev];
+        const beerData: Beer = {
+          id: data.id ?? Date.now(),
+          image: data.image ?? "",
+          brewery: data.brewery,
+          name: data.name,
+          style: data.style,
+          location: data.location,
+          description: data.description,
+          price: {
+            glass: data.price.glass,
+            pint: data.price.pint,
+          },
+          alcohol: data.alcohol,
+          isAvailable: data.isAvailable,
+          createdAt: data.createdAt,
+        };
+        newSlots[editingSlotIndex] = beerData;
+        return newSlots;
+      });
+    }
+    setEditingSlotIndex(null);
+    setIsFormOpen(false);
+  };
+
+  const handleCloseForm = () => {
+    setEditingSlotIndex(null);
+    setIsFormOpen(false);
+  };
+
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
+    <div className="flex-1 w-full flex flex-col gap-6">
       <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is an admin page that you can only see as an authenticated
-          user
-        </div>
+        <h1 className="font-bold text-2xl mb-2">ビールリスト管理</h1>
+        <p className="text-sm text-muted-foreground">
+          最大8つのビールスロットを管理できます。各スロットにビールを追加・編集・削除できます。
+        </p>
       </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          <Suspense>
-            <UserDetails />
-          </Suspense>
-        </pre>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {beerSlots.map((beer, index) => (
+          <BeerSlotCard
+            key={index}
+            beer={beer}
+            slotIndex={index}
+            onToggleAvailability={() => handleToggleAvailability(index)}
+            onEdit={() => handleEdit(index)}
+          />
+        ))}
       </div>
+
+      <BeerForm
+        beer={editingSlotIndex !== null ? beerSlots[editingSlotIndex] : null}
+        isOpen={isFormOpen}
+        onClose={handleCloseForm}
+        onSubmit={handleFormSubmit}
+      />
     </div>
   );
 }

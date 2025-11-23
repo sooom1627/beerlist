@@ -262,7 +262,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
                     <div className="p-3 rounded-full bg-muted/20 group-hover:scale-110 transition-transform duration-200 mb-2">
                       <ImageIcon className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
                     </div>
-                    <span className="text-xs font-medium text-muted-foreground">Add Photo</span>
+                    <span className="text-xs font-medium text-muted-foreground">写真を追加</span>
                   </div>
                 )}
               </div>
@@ -275,23 +275,23 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
             {/* 基本情報セクション */}
             <div className="grid gap-6">
               <div className="grid gap-1.5">
-                <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Beer Name</Label>
+                <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">ビール名</Label>
                 <Input 
                   id="name" 
                   {...register("name")} 
                   className="h-12 text-lg bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4" 
-                  placeholder="例: UKIYOGUMO"
+                  placeholder="ビール名を入力してください"
                 />
                 {errors.name && <p className="text-xs text-destructive pl-1">{errors.name.message}</p>}
               </div>
 
               <div className="grid gap-1.5">
-                <Label htmlFor="brewery" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Brewery</Label>
+                <Label htmlFor="brewery" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">ブルワリー名</Label>
                 <Input 
                   id="brewery" 
                   {...register("brewery")} 
                   className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
-                  placeholder="例: DUGS"
+                  placeholder="ブルワリー名を入力してください"
                 />
                 {errors.brewery && <p className="text-xs text-destructive pl-1">{errors.brewery.message}</p>}
               </div>
@@ -300,62 +300,69 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
             {/* 詳細情報グリッド */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="style" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Style</Label>
+                <Label htmlFor="style" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">スタイル</Label>
                 <Input 
                   id="style" 
                   {...register("style")} 
                   className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                  placeholder="スタイルを入力してください"
                 />
                 {errors.style && <p className="text-xs text-destructive pl-1">{errors.style.message}</p>}
               </div>
 
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="location" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Location</Label>
+                <Label htmlFor="location" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">場所</Label>
                 <Input 
                   id="location" 
                   {...register("location")} 
                   className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                  placeholder="場所を入力してください"
                 />
                 {errors.location && <p className="text-xs text-destructive pl-1">{errors.location.message}</p>}
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="alcohol" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">ABV (%)</Label>
+              <div className="space-y-1.5 col-span-2">
+                <Label htmlFor="alcohol" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">アルコール度数 (%)</Label>
                 <Input
                   id="alcohol"
                   type="number"
                   step="0.1"
                   {...register("alcohol", { valueAsNumber: true })}
-                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4 w-full"
+                  placeholder="アルコール度数を入力してください"
                 />
                 {errors.alcohol && <p className="text-xs text-destructive pl-1">{errors.alcohol.message}</p>}
               </div>
 
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Price (¥)</Label>
-                </div>
-                <div className="flex gap-2">
-                  <div className="flex-1">
+              <div className="space-y-1.5 col-span-2">
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="price.glass" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">グラス-価格</Label>
                     <Input
-                      placeholder="Glass"
+                      id="price.glass"
+                      placeholder="グラスの価格を入力してください"
                       type="number"
                       {...register("price.glass", { valueAsNumber: true })}
                       className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4 text-right"
                     />
+                    {errors.price?.glass && (
+                      <p className="text-xs text-destructive pl-1">{errors.price.glass.message}</p>
+                    )}
                   </div>
-                  <div className="flex-1">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="price.pint" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">パイント-価格</Label>
                     <Input
-                      placeholder="Pint"
+                      id="price.pint"
+                      placeholder="パイントの価格を入力してください"
                       type="number"
                       {...register("price.pint", { valueAsNumber: true })}
                       className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4 text-right"
                     />
+                    {errors.price?.pint && (
+                      <p className="text-xs text-destructive pl-1">{errors.price.pint.message}</p>
+                    )}
                   </div>
                 </div>
-                {(errors.price?.glass || errors.price?.pint) && (
-                  <p className="text-xs text-destructive pl-1">価格を入力してください</p>
-                )}
               </div>
             </div>
 
