@@ -1,6 +1,13 @@
 "use client";
 
 import { BeerList as BeerListType } from "../types/beers.types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const beerList: BeerListType = [
   {
@@ -148,63 +155,65 @@ const beerList: BeerListType = [
 
 export function BeerList() {
   return (
-    <div className="space-y-8 w-full mx-auto pb-8">
-      {/* パターン1A: コンパクト横並び + description常時表示 */}
-      <section className="w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden w-full relative">
-          {beerList.map((beer, index) => (
-            <div
-              key={beer.id}
-              className="w-full py-2 px-1 border-b flex flex-col items-start relative"
-            >
-              <div className="w-full flex items-center gap-1 justify-between">
-                <div className="flex flex-row items-center gap-3">
-                  <img
-                    src={beer.image}
-                    alt={beer.name}
-                    className="w-10 h-10 object-contain rounded flex-shrink-0 bg-white dark:bg-zinc-100 p-1"
-                  />
-                  <div className="flex flex-col items-start justify-start">
-                    <span className="text-xs text-gray-500 truncate">
-                      {beer.brewery}/{beer.location}
-                    </span>
-                    <h3 className="font-semibold text-xs">{beer.name}</h3>
+    <div className="w-full max-w-7xl mx-auto px-4 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+        {beerList.map((beer) => (
+          <Card
+            key={beer.id}
+            className={`group transition-all duration-200 hover:shadow-md ${
+              !beer.isAvailable ? "opacity-60" : ""
+            }`}
+          >
+            <CardHeader className="pb-2 px-4 pt-4">
+              <div className="flex items-start justify-start gap-3 mb-2">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 bg-white dark:bg-zinc-800 rounded p-1.5 flex items-center justify-center border border-border">
+                    <img
+                      src={beer.image}
+                      alt={beer.name}
+                      className="w-full h-full object-contain"
+                    />
                   </div>
                 </div>
-                <div className="flex flex-col items-end justify-end">
-                  <span className="text-xs text-gray-800 dark:text-gray-200 whitespace-nowrap">
-                    glass: ¥{beer.price.glass}
-                  </span>
-                  <span className="text-xs text-gray-800 dark:text-gray-200 whitespace-nowrap">
-                    pint: ¥{beer.price.pint}
-                  </span>
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-sm font-semibold mb-0.5 line-clamp-1">
+                    {beer.name}
+                  </CardTitle>
+                  <CardDescription className="text-xs text-muted-foreground">
+                    {beer.brewery} / {beer.location}
+                  </CardDescription>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    style: <span className="font-medium">{beer.style}</span> / alcohol: <span className="font-medium">{beer.alcohol}%</span>
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
-                <span className="text-xs text-orange-500 whitespace-nowrap">
-                  style: {beer.style}
-                </span>
-                <span className="text-xs text-orange-500 whitespace-nowrap">
-                  alcohol: {beer.alcohol}%
-                </span>
+            </CardHeader>
+            <CardContent className="px-4 pb-4 pt-0 space-y-2">
+              <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
+                {beer.description}
+              </p>
+              <div className="flex items-center justify-between pt-1.5 border-t border-border">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="text-muted-foreground">Glass</span>
+                    <span className="font-medium">¥{beer.price.glass}</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs">
+                    <span className="text-muted-foreground">Pint</span>
+                    <span className="font-medium">¥{beer.price.pint}</span>
+                  </div>
+                </div>
+                {!beer.isAvailable && (
+                  <span className="text-xs text-muted-foreground">
+                    完売
+                  </span>
+                )}
               </div>
-              <div className="w-full">
-                <p className="text-xs text-gray-500 line-clamp-2">
-                  {beer.description}
-                </p>
-              </div>
-              {!beer.isAvailable && (
-                <span className="text-xs text-red-500 whitespace-nowrap absolute bottom-0 right-0 -z-10 opacity-20 pointer-events-none select-none">
-                  {beer.name} is sold out
-                </span>
-              )}
-              <span className="text-8xl font-bold text-orange-400 dark:text-orange-600 whitespace-nowrap absolute bottom-0 right-0 -z-10 opacity-20 pointer-events-none select-none">
-                {index + 1}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
+
