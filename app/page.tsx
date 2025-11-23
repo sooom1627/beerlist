@@ -3,15 +3,17 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 import { BeerList } from "@/features/beerlist/screen/beerList";
 import { BackgroundTexture } from "@/components/background-texture";
 import { GridPattern } from "@/components/ui/grid-pattern";
-import Link from "next/link";
+import { OpeningAnimation } from "@/components/opening-animation";
+import { InstagramFloatingButton } from "@/components/instagram-floating-button";
 import { Suspense } from "react";
-import { Instagram } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col bg-white dark:bg-zinc-950 relative overflow-hidden">
+      <OpeningAnimation alwaysShow={true} />
       <BackgroundTexture />
+      <InstagramFloatingButton />
       
       <GridPattern
         width={40}
@@ -42,15 +44,6 @@ export default function Home() {
 
       <footer className="w-full border-t border-gray-100 dark:border-zinc-900 mt-auto">
         <div className="w-full flex justify-center items-center gap-4 px-4 py-6">
-          <Link
-            href="https://www.instagram.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center p-2 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-            aria-label="Instagram"
-          >
-            <Instagram className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-          </Link>
           <ThemeSwitcher />
           <Suspense>
             <AuthButton />
