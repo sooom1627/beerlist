@@ -22,8 +22,10 @@ export default function Home() {
 
           <div className="flex flex-col items-center gap-2">
             <div className="w-px h-8 bg-zinc-300 dark:bg-zinc-800" />
-            <p className="text-xs font-mono tracking-[0.2em] text-zinc-500 dark:text-zinc-400 uppercase">
+            <p className="text-xs text-center font-mono tracking-[0.2em] text-zinc-500 dark:text-zinc-400 uppercase">
               Craftbeer & Grill
+              <br />
+              Today's Taps Line Up
             </p>
           </div>
         </div>
