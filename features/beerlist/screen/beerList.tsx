@@ -45,7 +45,7 @@ export function BeerList() {
   }
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-4">
+    <div className="w-full max-w-4xl mx-auto px-4 py-2">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {beerSlots?.map((beer) => {
           if (!beer) return null;
@@ -107,7 +107,7 @@ export function BeerList() {
                   )}
                 </div>
               </CardContent>
-              <span className="text-7xl font-black opacity-15 text-orange-400 dark:text-orange-400 absolute top-2 right-2">
+              <span className="text-7xl font-black opacity-15 text-zinc-900 dark:text-zinc-400 absolute top-2 right-2">
                 {beer.tapNumber}
               </span>
             </Card>
