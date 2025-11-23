@@ -26,7 +26,7 @@ interface BeerFormProps {
 }
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp","image/heic","image/heif"];
 
 export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(
@@ -186,22 +186,34 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {beer ? "ビール情報を更新" : "新しいビールを追加"}
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) return;
+    }}>
+      <DialogContent 
+        className="sm:max-w-[600px] w-[95vw] max-h-[90vh] p-0 gap-0 overflow-hidden rounded-2xl bg-background shadow-2xl [&>button]:hidden border-none flex flex-col"
+        onInteractOutside={(e) => e.preventDefault()}
+      >
+        <div className="flex items-center justify-between px-6 py-4 border-b bg-muted/10 backdrop-blur-xl sticky top-0 z-10">
+          <DialogTitle className="text-lg font-bold tracking-tight">
+            {beer ? "Edit Beer" : "New Beer"}
           </DialogTitle>
-          <DialogDescription>
-            {beer
-              ? "ビールの情報を編集してください"
-              : "新しいビールの情報を入力してください"}
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="image">画像</Label>
-            <div className="space-y-3">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full hover:bg-muted/20 transition-colors"
+            onClick={handleClose}
+          >
+            <X className="h-4 w-4" />
+            <span className="sr-only">閉じる</span>
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6 scrollbar-hide">
+          <form id="beer-form" onSubmit={handleSubmit(handleFormSubmit)} className="space-y-8">
+            
+            {/* 画像アップロードセクション */}
+            <div className="space-y-4">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -210,176 +222,178 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
                 className="hidden"
                 id="image-file"
               />
-              {imagePreview ? (
-                <div className="space-y-3">
-                  <div className="relative inline-block group">
-                    <div className="relative w-24 h-24 border-2 border-border rounded-lg overflow-hidden bg-muted/50 flex items-center justify-center shadow-sm">
+              
+              <div className="flex justify-center">
+                {imagePreview ? (
+                  <div className="relative group">
+                    <div className="relative w-32 h-32 sm:w-40 sm:h-40 rounded-2xl overflow-hidden border-2 border-border shadow-sm transition-all hover:shadow-md bg-white">
                       <img
                         src={imagePreview}
-                        alt="プレビュー"
-                        className="w-full h-full object-contain"
+                        alt="Preview"
+                        className="w-full h-full object-contain p-2"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-1 right-1 h-6 w-6 rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
-                        onClick={handleRemoveImage}
-                      >
-                        <X className="h-3 w-3" />
-                      </Button>
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-sm">
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="icon"
+                          className="h-8 w-8 rounded-full shadow-lg"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <Upload className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="h-8 w-8 rounded-full shadow-lg"
+                          onClick={handleRemoveImage}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="flex-1"
-                    >
-                      <Upload className="h-4 w-4 mr-2" />
-                      画像を変更
-                    </Button>
-                  </div>
-                  {imageFile && (
-                    <div className="flex items-center justify-between text-xs text-muted-foreground bg-muted/50 p-2 rounded">
-                      <span>ファイル: {imageFile.name}</span>
-                      <span>サイズ: {(imageFile.size / 1024).toFixed(1)} KB</span>
+                ) : (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl border-2 border-dashed border-muted-foreground/25 hover:border-primary/50 bg-muted/5 hover:bg-muted/10 flex flex-col items-center justify-center cursor-pointer transition-all group"
+                  >
+                    <div className="p-3 rounded-full bg-muted/20 group-hover:scale-110 transition-transform duration-200 mb-2">
+                      <ImageIcon className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-border rounded-lg p-8 text-center bg-muted/30 hover:bg-muted/50 cursor-pointer transition-colors"
-                >
-                  <ImageIcon className="h-12 w-12 mx-auto mb-2 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground font-medium">
-                    画像を選択してください
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    JPEG、PNG、WebP形式（最大5MB）
-                  </p>
-                </div>
-              )}
+                    <span className="text-xs font-medium text-muted-foreground">Add Photo</span>
+                  </div>
+                )}
+              </div>
               {errors.image && (
-                <p className="text-sm text-destructive">{errors.image.message}</p>
+                <p className="text-xs text-center text-destructive font-medium animate-in fade-in slide-in-from-top-1">{errors.image.message}</p>
               )}
               <input type="hidden" {...register("image")} />
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
+            {/* 基本情報セクション */}
+            <div className="grid gap-6">
+              <div className="grid gap-1.5">
+                <Label htmlFor="name" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Beer Name</Label>
+                <Input 
+                  id="name" 
+                  {...register("name")} 
+                  className="h-12 text-lg bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4" 
+                  placeholder="例: UKIYOGUMO"
+                />
+                {errors.name && <p className="text-xs text-destructive pl-1">{errors.name.message}</p>}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="brewery">ブルワリー名</Label>
-              <Input id="brewery" {...register("brewery")} />
-              {errors.brewery && (
-                <p className="text-sm text-destructive">
-                  {errors.brewery.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">ビール名</Label>
-              <Input id="name" {...register("name")} />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="style">スタイル</Label>
-              <Input id="style" {...register("style")} />
-              {errors.style && (
-                <p className="text-sm text-destructive">{errors.style.message}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="location">場所</Label>
-              <Input id="location" {...register("location")} />
-              {errors.location && (
-                <p className="text-sm text-destructive">
-                  {errors.location.message}
-                </p>
-              )}
+              <div className="grid gap-1.5">
+                <Label htmlFor="brewery" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Brewery</Label>
+                <Input 
+                  id="brewery" 
+                  {...register("brewery")} 
+                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                  placeholder="例: DUGS"
+                />
+                {errors.brewery && <p className="text-xs text-destructive pl-1">{errors.brewery.message}</p>}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="alcohol">アルコール度数 (%)</Label>
-              <Input
-                id="alcohol"
-                type="number"
-                step="0.1"
-                {...register("alcohol", { valueAsNumber: true })}
+            {/* 詳細情報グリッド */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="style" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Style</Label>
+                <Input 
+                  id="style" 
+                  {...register("style")} 
+                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                />
+                {errors.style && <p className="text-xs text-destructive pl-1">{errors.style.message}</p>}
+              </div>
+
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="location" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Location</Label>
+                <Input 
+                  id="location" 
+                  {...register("location")} 
+                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                />
+                {errors.location && <p className="text-xs text-destructive pl-1">{errors.location.message}</p>}
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="alcohol" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">ABV (%)</Label>
+                <Input
+                  id="alcohol"
+                  type="number"
+                  step="0.1"
+                  {...register("alcohol", { valueAsNumber: true })}
+                  className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4"
+                />
+                {errors.alcohol && <p className="text-xs text-destructive pl-1">{errors.alcohol.message}</p>}
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Price (¥)</Label>
+                </div>
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <Input
+                      placeholder="Glass"
+                      type="number"
+                      {...register("price.glass", { valueAsNumber: true })}
+                      className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4 text-right"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Input
+                      placeholder="Pint"
+                      type="number"
+                      {...register("price.pint", { valueAsNumber: true })}
+                      className="h-11 text-base bg-muted/20 border-transparent focus:border-primary focus:bg-background transition-all rounded-xl px-4 text-right"
+                    />
+                  </div>
+                </div>
+                {(errors.price?.glass || errors.price?.pint) && (
+                  <p className="text-xs text-destructive pl-1">価格を入力してください</p>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="description" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground pl-1">Description</Label>
+              <textarea
+                id="description"
+                {...register("description")}
+                className="w-full min-h-[120px] rounded-xl bg-muted/20 border-transparent focus:border-primary focus:bg-background px-4 py-3 text-base shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-0 resize-none transition-all"
+                placeholder="ビールの特徴や味わいについて..."
               />
-              {errors.alcohol && (
-                <p className="text-sm text-destructive">
-                  {errors.alcohol.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description">説明</Label>
-            <textarea
-              id="description"
-              {...register("description")}
-              className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              rows={3}
-            />
-            {errors.description && (
-              <p className="text-sm text-destructive">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="glass">Glass価格 (¥)</Label>
-              <Input
-                id="glass"
-                type="number"
-                {...register("price.glass", { valueAsNumber: true })}
-              />
-              {errors.price?.glass && (
-                <p className="text-sm text-destructive">
-                  {errors.price.glass.message}
-                </p>
+              {errors.description && (
+                <p className="text-xs text-destructive pl-1">{errors.description.message}</p>
               )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="pint">Pint価格 (¥)</Label>
-              <Input
-                id="pint"
-                type="number"
-                {...register("price.pint", { valueAsNumber: true })}
-              />
-              {errors.price?.pint && (
-                <p className="text-sm text-destructive">
-                  {errors.price.pint.message}
-                </p>
-              )}
-            </div>
-          </div>
+          </form>
+        </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={handleClose}>
-              キャンセル
+        <div className="p-4 border-t bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex gap-3 w-full">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleClose} 
+              className="flex-1 h-11 rounded-xl border-muted-foreground/20 hover:bg-muted/50 font-medium"
+            >
+              Cancel
             </Button>
-            <Button type="submit">保存</Button>
-          </DialogFooter>
-        </form>
+            <Button 
+              type="submit" 
+              form="beer-form"
+              className="flex-[2] h-11 rounded-xl font-bold shadow-lg shadow-primary/20" 
+            >
+              {beer ? "Update" : "Create"}
+            </Button>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );
