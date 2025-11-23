@@ -129,9 +129,11 @@ export function BeerList() {
                   </div>
                   
                   {!beer.isAvailable && (
-                    <span className="text-xs font-medium text-zinc-400 px-2 py-1 bg-zinc-100 dark:bg-zinc-800 rounded-full">
-                      SOLD OUT
-                    </span>
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                      <span className="text-xl font-bold text-zinc-500 border-4 border-zinc-500 px-6 py-3 rounded-md -rotate-12 opacity-90 uppercase tracking-widest shadow-sm bg-white/50 dark:bg-black/50 backdrop-blur-sm">
+                        Sold Out
+                      </span>
+                    </div>
                   )}
                 </div>
               </CardContent>
