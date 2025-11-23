@@ -155,19 +155,19 @@ const beerList: BeerListType = [
 
 export function BeerList() {
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {beerList.map((beer) => (
+    <div className="w-full max-w-5xl mx-auto px-4 py-4">
+      <div className="grid grid-cols-1 md:grid-cols-2  gap-3">
+        {beerList.map((beer, index) => (
           <Card
             key={beer.id}
-            className={`group transition-all duration-200 hover:shadow-md ${
+            className={`group relative transition-all duration-200 hover:shadow-md ${
               !beer.isAvailable ? "opacity-60" : ""
             }`}
           >
-            <CardHeader className="pb-2 px-4 pt-4">
+            <CardHeader className="pb-0 px-4 pt-4">
               <div className="flex items-start justify-start gap-3 mb-2">
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-white dark:bg-zinc-800 rounded p-1.5 flex items-center justify-center border border-border">
+                  <div className="w-12 h-12 bg-white rounded p-1.5 flex items-center justify-center border border-border">
                     <img
                       src={beer.image}
                       alt={beer.name}
@@ -176,20 +176,20 @@ export function BeerList() {
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <CardTitle className="text-sm font-semibold mb-0.5 line-clamp-1">
+                  <CardTitle className="text-sm font-semibold line-clamp-1">
                     {beer.name}
                   </CardTitle>
                   <CardDescription className="text-xs text-muted-foreground">
                     {beer.brewery} / {beer.location}
                   </CardDescription>
-                  <p className="text-xs text-muted-foreground mt-0.5">
+                  <p className="text-xs text-muted-foreground">
                     style: <span className="font-medium">{beer.style}</span> / alcohol: <span className="font-medium">{beer.alcohol}%</span>
                   </p>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="px-4 pb-4 pt-0 space-y-2">
-              <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
+              <p className="text-xs text-muted-foreground leading-snug">
                 {beer.description}
               </p>
               <div className="flex items-center justify-between pt-1.5 border-t border-border">
@@ -210,6 +210,9 @@ export function BeerList() {
                 )}
               </div>
             </CardContent>
+            <span className="text-7xl font-black opacity-15 text-orange-400 dark:text-orange-400 absolute top-2 right-2">
+              {index + 1}
+            </span>
           </Card>
         ))}
       </div>
