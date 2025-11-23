@@ -15,6 +15,7 @@ export default function AdminPage() {
   const upsertBeerMutation = useUpsertBeer();
 
   const [editingSlotIndex, setEditingSlotIndex] = useState<number | null>(null);
+  const [editMode, setEditMode] = useState<'update' | 'replace'>('update');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -34,6 +35,13 @@ export default function AdminPage() {
 
   const handleEdit = (slotIndex: number) => {
     setEditingSlotIndex(slotIndex);
+    setEditMode('update');
+    setIsFormOpen(true);
+  };
+
+  const handleReplace = (slotIndex: number) => {
+    setEditingSlotIndex(slotIndex);
+    setEditMode('replace');
     setIsFormOpen(true);
   };
 
@@ -104,12 +112,13 @@ export default function AdminPage() {
             slotIndex={index}
             onToggleAvailability={() => handleToggleAvailability(index)}
             onEdit={() => handleEdit(index)}
+            onReplace={() => handleReplace(index)}
           />
         ))}
       </div>
 
       <BeerForm
-        beer={editingSlotIndex !== null ? displaySlots[editingSlotIndex] : null}
+        beer={editMode === 'update' && editingSlotIndex !== null ? displaySlots[editingSlotIndex] : null}
         isOpen={isFormOpen}
         onClose={handleCloseForm}
         onSubmit={handleFormSubmit}

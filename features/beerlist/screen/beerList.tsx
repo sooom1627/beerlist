@@ -68,7 +68,7 @@ export function BeerList() {
                           className="w-full h-full object-contain"
                         />
                       ) : (
-                         <div className="w-full h-full bg-gray-200 rounded" />
+                        <div className="w-full h-full bg-gray-200 rounded" />
                       )}
                     </div>
                   </div>

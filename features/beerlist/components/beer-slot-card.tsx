@@ -17,6 +17,7 @@ interface BeerSlotCardProps {
   slotIndex: number;
   onToggleAvailability: () => void;
   onEdit: () => void;
+  onReplace: () => void;
 }
 
 export function BeerSlotCard({
@@ -24,6 +25,7 @@ export function BeerSlotCard({
   slotIndex,
   onToggleAvailability,
   onEdit,
+  onReplace,
 }: BeerSlotCardProps) {
   if (!beer) {
     return (
@@ -106,18 +108,22 @@ export function BeerSlotCard({
             {beer.isAvailable ? (
               <>
                 <X className="h-4 w-4 mr-1" />
-                利用不可にする
+                完売に変更
               </>
             ) : (
               <>
                 <Check className="h-4 w-4 mr-1" />
-                利用可能にする
+                OKに変更
               </>
             )}
           </Button>
           <Button onClick={onEdit} variant="outline" size="sm" className="flex-1">
             <Edit2 className="h-4 w-4 mr-1" />
             編集
+          </Button>
+          <Button onClick={onReplace} variant="destructive" size="sm" className="flex-1">
+            <Edit2 className="h-4 w-4 mr-1" />
+            入れ替え
           </Button>
         </div>
       </CardContent>

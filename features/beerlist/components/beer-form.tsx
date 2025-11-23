@@ -79,18 +79,46 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
   });
 
   useEffect(() => {
-    if (beer?.image) {
-      setImagePreview(beer.image);
-    } else if (!isOpen) {
-      setImagePreview(null);
+    if (isOpen) {
+      if (beer) {
+        reset({
+          id: beer.id,
+          image: beer.image,
+          brewery: beer.brewery,
+          name: beer.name,
+          style: beer.style,
+          location: beer.location,
+          description: beer.description,
+          price: {
+            glass: beer.price.glass,
+            pint: beer.price.pint,
+          },
+          alcohol: beer.alcohol,
+          isAvailable: beer.isAvailable,
+          createdAt: beer.createdAt,
+        });
+        setImagePreview(beer.image);
+      } else {
+        reset({
+          image: "",
+          brewery: "",
+          name: "",
+          style: "",
+          location: "",
+          description: "",
+          price: {
+            glass: 0,
+            pint: 0,
+          },
+          alcohol: 0,
+          isAvailable: true,
+          createdAt: new Date().toISOString().split("T")[0],
+        });
+        setImagePreview(null);
+      }
       setImageFile(null);
     }
-    // createdAtが空の場合は現在の日付を設定
-    if (!beer && isOpen) {
-      const today = new Date().toISOString().split("T")[0];
-      setValue("createdAt", today);
-    }
-  }, [beer, isOpen, setValue]);
+  }, [beer, isOpen, reset]);
 
   // Blob URLのクリーンアップ
   useEffect(() => {
