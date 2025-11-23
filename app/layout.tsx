@@ -5,6 +5,7 @@ import QueryProvider from "@/components/query-provider";
 import "./globals.css";
 import { jsonLd } from "./json-ld";
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Analytics />
+      <SpeedInsights />
       <body className={`${geistSans.className} antialiased`}>
         <script
           type="application/ld+json"
