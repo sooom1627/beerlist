@@ -16,6 +16,7 @@ interface BeerSlotCardProps {
   beer: Beer | null;
   slotIndex: number;
   onToggleAvailability: () => void;
+  onToggleNew: () => void;
   onEdit: () => void;
   onReplace: () => void;
 }
@@ -24,6 +25,7 @@ export function BeerSlotCard({
   beer,
   slotIndex,
   onToggleAvailability,
+  onToggleNew,
   onEdit,
   onReplace,
 }: BeerSlotCardProps) {
@@ -98,7 +100,7 @@ export function BeerSlotCard({
             </div>
           </div>
         </div>
-        <div className="flex gap-2 pt-2">
+        <div className="grid grid-cols-2 gap-2 pt-2">
           <Button
             onClick={onToggleAvailability}
             variant={beer.isAvailable ? "outline" : "default"}
@@ -114,6 +116,19 @@ export function BeerSlotCard({
               <>
                 <Check className="h-4 w-4 mr-1" />
                 OKに変更
+              </>
+            )}
+          </Button>
+          <Button onClick={onToggleNew} variant="outline" size="sm">
+            {beer.isNew ? (
+              <>
+                <X className="h-4 w-4 mr-1" />
+                Newを解除
+              </>
+            ) : (
+              <>
+                <Check className="h-4 w-4 mr-1" />
+                Newに変更
               </>
             )}
           </Button>

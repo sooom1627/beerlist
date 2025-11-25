@@ -33,6 +33,16 @@ export default function AdminPage() {
     }
   };
 
+  const handleToggleNew = async (slotIndex: number) => {
+    const beer = displaySlots[slotIndex];
+    if (beer) {
+      await upsertBeerMutation.mutateAsync({
+        ...beer,
+        isNew: !beer.isNew,
+      });
+    }
+  };
+
   const handleEdit = (slotIndex: number) => {
     setEditingSlotIndex(slotIndex);
     setEditMode('update');
@@ -68,6 +78,7 @@ export default function AdminPage() {
           price: data.price,
           alcohol: data.alcohol,
           isAvailable: data.isAvailable,
+          isNew: data.isNew,
         });
         setEditingSlotIndex(null);
         setIsFormOpen(false);
@@ -111,6 +122,7 @@ export default function AdminPage() {
             beer={beer}
             slotIndex={index}
             onToggleAvailability={() => handleToggleAvailability(index)}
+            onToggleNew={() => handleToggleNew(index)}
             onEdit={() => handleEdit(index)}
             onReplace={() => handleReplace(index)}
           />

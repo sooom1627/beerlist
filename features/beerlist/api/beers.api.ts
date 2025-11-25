@@ -46,7 +46,7 @@ export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: n
     price_pint: beer.price.pint,
     alcohol: beer.alcohol,
     is_available: beer.isAvailable,
-    is_new: beer.isNew,
+    isNew: beer.isNew,
   };
 
   const { data, error } = await supabase
