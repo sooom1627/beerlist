@@ -24,22 +24,34 @@ export default function AdminPage() {
   const handleToggleAvailability = async (slotIndex: number) => {
     const beer = displaySlots[slotIndex];
     if (beer) {
-      // Remove createdAt as it's not expected in the update payload
-      const { createdAt, ...beerData } = beer;
-      await upsertBeerMutation.mutateAsync({
-        ...beerData,
-        isAvailable: !beer.isAvailable,
-      });
+      try {
+        // Remove createdAt as it's not expected in the update payload
+        const { createdAt, ...beerData } = beer;
+        await upsertBeerMutation.mutateAsync({
+          ...beerData,
+          isAvailable: !beer.isAvailable,
+        });
+      } catch (error) {
+        console.error("Failed to toggle availability:", error);
+        alert("在庫ステータスの切り替えに失敗しました。");
+      }
     }
   };
 
   const handleToggleNew = async (slotIndex: number) => {
     const beer = displaySlots[slotIndex];
     if (beer) {
-      await upsertBeerMutation.mutateAsync({
-        ...beer,
-        isNew: !beer.isNew,
-      });
+      try {
+        // Remove createdAt as it's not expected in the update payload
+        const { createdAt, ...beerData } = beer;
+        await upsertBeerMutation.mutateAsync({
+          ...beerData,
+          isNew: !beer.isNew,
+        });
+      } catch (error) {
+        console.error("Failed to toggle new status:", error);
+        alert("新着ステータスの切り替えに失敗しました。");
+      }
     }
   };
 

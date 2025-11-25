@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
-import { Beer, BeerDB } from "../types/beers.types";
+import { Beer, transformBeerDBToBeer, beerDBSchema } from "../types/beers.types";
+import { z } from "zod";
 
 export const getBeers = async (): Promise<Beer[]> => {
   const supabase = createClient();
@@ -10,25 +11,9 @@ export const getBeers = async (): Promise<Beer[]> => {
 
   if (error) throw error;
 
-
-  return (data as BeerDB[]).map((beer) => ({
-    id: beer.id,
-    tapNumber: beer.tap_number,
-    image: beer.image,
-    brewery: beer.brewery,
-    name: beer.name,
-    style: beer.style,
-    location: beer.location,
-    description: beer.description,
-    price: {
-      glass: beer.price_glass,
-      pint: beer.price_pint,
-    },
-    alcohol: beer.alcohol,
-    isAvailable: beer.is_available,
-    createdAt: beer.created_at,
-    isNew: beer.isNew,
-  }));
+  // Validate response data with Zod schema
+  const beersArray = z.array(beerDBSchema).parse(data);
+  return beersArray.map(transformBeerDBToBeer);
 };
 
 export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: number }): Promise<Beer> => {
@@ -56,26 +41,10 @@ export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: n
     .single();
 
   if (error) throw error;
-  
-  const savedBeer = data as BeerDB;
-  return {
-    id: savedBeer.id,
-    tapNumber: savedBeer.tap_number,
-    image: savedBeer.image,
-    brewery: savedBeer.brewery,
-    name: savedBeer.name,
-    style: savedBeer.style,
-    location: savedBeer.location,
-    description: savedBeer.description,
-    price: {
-      glass: savedBeer.price_glass,
-      pint: savedBeer.price_pint,
-    },
-    alcohol: savedBeer.alcohol,
-    isAvailable: savedBeer.is_available,
-    createdAt: savedBeer.created_at,
-    isNew: savedBeer.isNew,
-  };
+
+  // Validate response data with Zod schema
+  const validatedBeer = beerDBSchema.parse(data);
+  return transformBeerDBToBeer(validatedBeer);
 };
 
 export const deleteBeer = async (tapNumber: number): Promise<void> => {

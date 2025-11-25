@@ -80,10 +80,8 @@ export const useUpsertBeer = () => {
         queryClient.setQueryData(beerKeys.all, context.previousBeers);
       }
     },
-    onSettled: () => {
-      // Always refetch after error or success:
-      queryClient.invalidateQueries({ queryKey: beerKeys.all });
-    },
+    // onSettled removed to prevent race condition with Realtime subscription
+    // The Realtime subscription in beerList.tsx will handle cache invalidation
   });
 };
 

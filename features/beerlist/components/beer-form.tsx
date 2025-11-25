@@ -22,7 +22,7 @@ interface BeerFormProps {
   beer: Beer | null;
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: BeerFormData) => void;
+  onSubmit: (data: BeerFormData) => Promise<void>;
 }
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -60,6 +60,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
           alcohol: beer.alcohol,
           isAvailable: beer.isAvailable,
           createdAt: beer.createdAt,
+          isNew: beer.isNew,
         }
       : {
           image: "",
@@ -75,6 +76,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
           alcohol: 0,
           isAvailable: true,
           createdAt: "",
+          isNew: false,
         },
   });
 
@@ -96,6 +98,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
           alcohol: beer.alcohol,
           isAvailable: beer.isAvailable,
           createdAt: beer.createdAt,
+          isNew: beer.isNew,
         });
         setImagePreview(beer.image);
       } else {
@@ -113,6 +116,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
           alcohol: 0,
           isAvailable: true,
           createdAt: new Date().toISOString().split("T")[0],
+          isNew: false,
         });
         setImagePreview(null);
       }
@@ -129,6 +133,18 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       }
     };
   }, []);
+
+  // Helper function to clean up image state
+  const cleanupImageState = () => {
+    if (previewUrlRef.current) {
+      URL.revokeObjectURL(previewUrlRef.current);
+      previewUrlRef.current = null;
+    }
+    setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -172,7 +188,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
     }
   };
 
-  const handleFormSubmit = (data: BeerFormData) => {
+  const handleFormSubmit = async (data: BeerFormData) => {
     // 新規作成時は画像ファイルまたは既存の画像URLが必要
     if (!beer && !imageFile && !imagePreview) {
       alert("画像ファイルを選択してください");
@@ -185,31 +201,24 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       image: imagePreview || data.image || "",
       imageFile: imageFile || undefined,
     };
-    onSubmit(submitData);
-    reset();
-    if (previewUrlRef.current) {
-      URL.revokeObjectURL(previewUrlRef.current);
-      previewUrlRef.current = null;
+    
+    try {
+      await onSubmit(submitData);
+      // 成功時のみフォームをリセット
+      reset();
+      cleanupImageState();
+      setImagePreview(null);
+      // onCloseは親コンポーネントで呼ばれるため、ここでは呼ばない
+    } catch (error) {
+      // エラーは親コンポーネントで処理されるため、ここでは何もしない
+      console.error("Form submission error:", error);
     }
-    setImagePreview(null);
-    setImageFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-    onClose();
   };
 
   const handleClose = () => {
     reset();
-    if (previewUrlRef.current && !beer?.image) {
-      URL.revokeObjectURL(previewUrlRef.current);
-      previewUrlRef.current = null;
-    }
+    cleanupImageState();
     setImagePreview(beer?.image || null);
-    setImageFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
     onClose();
   };
 
