@@ -1,102 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { toast } from "sonner";
 import { BeerSlotCard } from "@/features/beerlist/components/beer-slot-card";
 import { BeerForm } from "@/features/beerlist/components/beer-form";
-import type { BeerFormData } from "@/features/beerlist/types/beer-form.types";
-import { useBeers, useUpsertBeer } from "@/features/beerlist/hooks/useBeers";
+import { useBeers } from "@/features/beerlist/hooks/useBeers";
+import { useBeerSlotManagement, type ToastNotification } from "@/features/beerlist/hooks/useBeerSlotManagement";
 import type { Beer } from "@/features/beerlist/types/beers.types";
-import { uploadBeerImage } from "@/features/beerlist/api/beers.api";
+import { useCallback } from "react";
 
 const MAX_SLOTS = 8;
 
+/**
+ * 管理画面ページ
+ *
+ * 責務:
+ * - ビールスロットの管理画面を提供
+ * - スロット一覧表示
+ * - ビール編集フォームの表示制御
+ * - 操作結果のToast通知
+ *
+ * 使用コンポーネント:
+ * - BeerSlotCard: スロットカード表示
+ * - BeerForm: ビール編集フォーム
+ *
+ * 使用フック:
+ * - useBeers: ビールデータ取得
+ * - useBeerSlotManagement: スロット管理ロジック
+ */
 export default function AdminPage() {
   const { data: beerSlots, isLoading } = useBeers();
-  const upsertBeerMutation = useUpsertBeer();
-
-  const [editingSlotIndex, setEditingSlotIndex] = useState<number | null>(null);
-  const [editMode, setEditMode] = useState<'update' | 'replace'>('update');
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const displaySlots: (Beer | null)[] = beerSlots || Array(MAX_SLOTS).fill(null);
 
-  const handleToggleAvailability = async (slotIndex: number) => {
-    const beer = displaySlots[slotIndex];
-    if (beer) {
-      // Remove createdAt as it's not expected in the update payload
-      const { createdAt, ...beerData } = beer;
-      await upsertBeerMutation.mutateAsync({
-        ...beerData,
-        isAvailable: !beer.isAvailable,
-      });
+  /**
+   * Toast通知を表示するコールバック
+   */
+  const handleNotify = useCallback((notification: ToastNotification) => {
+    if (notification.type === 'success') {
+      toast.success(notification.message);
+    } else {
+      toast.error(notification.message);
     }
-  };
+  }, []);
 
-  const handleToggleNew = async (slotIndex: number) => {
-    const beer = displaySlots[slotIndex];
-    if (beer) {
-      await upsertBeerMutation.mutateAsync({
-        ...beer,
-        isNew: !beer.isNew,
-      });
-    }
-  };
-
-  const handleEdit = (slotIndex: number) => {
-    setEditingSlotIndex(slotIndex);
-    setEditMode('update');
-    setIsFormOpen(true);
-  };
-
-  const handleReplace = (slotIndex: number) => {
-    setEditingSlotIndex(slotIndex);
-    setEditMode('replace');
-    setIsFormOpen(true);
-  };
-
-  const handleFormSubmit = async (data: BeerFormData) => {
-    if (editingSlotIndex !== null) {
-      try {
-        setIsSubmitting(true);
-        let imageUrl = data.image ?? "";
-        
-        if (data.imageFile) {
-          imageUrl = await uploadBeerImage(data.imageFile);
-        }
-
-        const tapNumber = editingSlotIndex + 1;
-        await upsertBeerMutation.mutateAsync({
-          id: data.id,
-          tapNumber,
-          image: imageUrl,
-          brewery: data.brewery,
-          name: data.name,
-          style: data.style,
-          location: data.location,
-          description: data.description,
-          price: data.price,
-          alcohol: data.alcohol,
-          isAvailable: data.isAvailable,
-          isNew: data.isNew,
-        });
-        setEditingSlotIndex(null);
-        setIsFormOpen(false);
-      } catch (error) {
-        console.error("Failed to submit form:", error);
-        alert("保存に失敗しました。");
-      } finally {
-        setIsSubmitting(false);
-      }
-    }
-  };
-
-  const handleCloseForm = () => {
-    if (!isSubmitting) {
-      setEditingSlotIndex(null);
-      setIsFormOpen(false);
-    }
-  };
+  const {
+    isFormOpen,
+    currentBeer,
+    handleToggleAvailability,
+    handleToggleNew,
+    handleEdit,
+    handleReplace,
+    handleFormSubmit,
+    handleCloseForm,
+  } = useBeerSlotManagement(beerSlots, { onNotify: handleNotify });
 
   if (isLoading) {
     return (
@@ -130,7 +86,7 @@ export default function AdminPage() {
       </div>
 
       <BeerForm
-        beer={editMode === 'update' && editingSlotIndex !== null ? displaySlots[editingSlotIndex] : null}
+        beer={currentBeer}
         isOpen={isFormOpen}
         onClose={handleCloseForm}
         onSubmit={handleFormSubmit}

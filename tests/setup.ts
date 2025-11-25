@@ -1,0 +1,16 @@
+/// <reference types="vitest" />
+import '@testing-library/jest-dom';
+import { afterEach, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+
+// React Testing Libraryのクリーンアップを各テスト後に実行
+afterEach(() => {
+  cleanup();
+});
+
+// グローバルなモック設定
+global.URL.createObjectURL = vi.fn(() => 'mock-blob-url');
+global.URL.revokeObjectURL = vi.fn();
+
+// アラートのモック
+global.alert = vi.fn();

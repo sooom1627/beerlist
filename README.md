@@ -1,0 +1,89 @@
+# Beer List
+
+[![Test](https://github.com/YOUR_USERNAME/beerlist/actions/workflows/test.yml/badge.svg)](https://github.com/YOUR_USERNAME/beerlist/actions/workflows/test.yml)
+[![CI](https://github.com/YOUR_USERNAME/beerlist/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/beerlist/actions/workflows/ci.yml)
+
+ビールリスト管理アプリケーション
+
+## 技術スタック
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- Supabase
+- React Query
+- Vitest + React Testing Library
+
+## セットアップ
+
+```bash
+# 依存関係のインストール
+pnpm install
+
+# 開発サーバー起動
+pnpm dev
+
+# ビルド
+pnpm build
+
+# 本番環境起動
+pnpm start
+```
+
+## テスト
+
+```bash
+# 全テストを実行
+pnpm test
+
+# カバレッジレポート取得
+pnpm test:coverage
+
+# UIモードで実行
+pnpm test:ui
+```
+
+テストの詳細は [tests/README.md](./tests/README.md) を参照してください。
+
+## CI/CD
+
+このプロジェクトはGitHub Actionsを使用して自動テストを実行します。
+
+### ワークフロー
+
+- **Test** - Pull Request時にテストを実行
+- **CI** - Pull Request時にLintとビルドを実行
+
+すべてのPRは以下のチェックに合格する必要があります：
+- ✅ テストがすべて成功
+- ✅ ビルドが成功
+- ✅ Lint（ESLint）が成功
+
+## プロジェクト構成
+
+```
+.
+├── app/                    # Next.js App Router
+├── features/               # 機能別ディレクトリ
+│   └── beerlist/
+│       ├── components/     # コンポーネント
+│       │   ├── common/     # 共通コンポーネント
+│       │   ├── beer-form/  # フォーム関連
+│       │   └── beer-slot-card/  # スロットカード
+│       ├── hooks/          # カスタムフック
+│       ├── api/            # API層
+│       ├── types/          # 型定義
+│       └── screen/         # 画面コンポーネント
+├── components/             # 汎用UIコンポーネント
+├── lib/                    # ユーティリティ
+└── tests/                  # テスト設定
+```
+
+## テストカバレッジ
+
+- 全体: 64.12%
+- 共通コンポーネント: 100%
+- カスタムフック: 60%以上
+
+詳細は `pnpm test:coverage` で確認できます。
