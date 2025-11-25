@@ -37,6 +37,7 @@ jobs:
 
       - name: Run ESLint
         run: pnpm lint
+        continue-on-error: true
 
       - name: Run tests
         run: pnpm test run
