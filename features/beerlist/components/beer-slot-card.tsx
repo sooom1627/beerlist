@@ -92,11 +92,11 @@ export function BeerSlotCard({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1 text-xs">
               <span className="text-muted-foreground">Glass</span>
-              <span className="font-medium">¥{beer.price.glass}</span>
+              <span className="font-medium">¥{beer.price.glass.toLocaleString()}</span>
             </div>
             <div className="flex items-center gap-1 text-xs">
               <span className="text-muted-foreground">Pint</span>
-              <span className="font-medium">¥{beer.price.pint}</span>
+              <span className="font-medium">¥{beer.price.pint.toLocaleString()}</span>
             </div>
           </div>
         </div>

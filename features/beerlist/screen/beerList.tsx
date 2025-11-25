@@ -135,7 +135,7 @@ export function BeerList() {
                         )
                       </span>
                       <span className="font-medium text-zinc-900 dark:text-zinc-200">
-                        ¥{beer.price.glass}
+                        ¥{beer.price.glass.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex flex-col">
@@ -147,7 +147,7 @@ export function BeerList() {
                         )
                       </span>
                       <span className="font-medium text-zinc-900 dark:text-zinc-200">
-                        ¥{beer.price.pint}
+                        ¥{beer.price.pint.toLocaleString()}
                       </span>
                     </div>
                   </div>
