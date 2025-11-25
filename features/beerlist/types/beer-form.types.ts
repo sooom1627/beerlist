@@ -16,6 +16,7 @@ export const beerFormSchema = z.object({
   alcohol: z.number().min(0).max(100, "アルコール度数は0-100の範囲である必要があります"),
   isAvailable: z.boolean(),
   createdAt: z.string(),
+  isNew: z.boolean(),
 }).refine(
   (data) => {
     // 新規作成時（idがない場合）は画像ファイルまたは画像URLが必要

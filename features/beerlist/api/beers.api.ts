@@ -10,6 +10,7 @@ export const getBeers = async (): Promise<Beer[]> => {
 
   if (error) throw error;
 
+
   return (data as BeerDB[]).map((beer) => ({
     id: beer.id,
     tapNumber: beer.tap_number,
@@ -26,6 +27,7 @@ export const getBeers = async (): Promise<Beer[]> => {
     alcohol: beer.alcohol,
     isAvailable: beer.is_available,
     createdAt: beer.created_at,
+    isNew: beer.isNew,
   }));
 };
 
@@ -44,6 +46,7 @@ export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: n
     price_pint: beer.price.pint,
     alcohol: beer.alcohol,
     is_available: beer.isAvailable,
+    isNew: beer.isNew,
   };
 
   const { data, error } = await supabase
@@ -71,6 +74,7 @@ export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: n
     alcohol: savedBeer.alcohol,
     isAvailable: savedBeer.is_available,
     createdAt: savedBeer.created_at,
+    isNew: savedBeer.isNew,
   };
 };
 

@@ -14,6 +14,7 @@ export type Beer = {
   alcohol: number;
   isAvailable: boolean;
   createdAt: string;
+  isNew: boolean;
 };
 
 export type BeerList = Beer[];
@@ -32,5 +33,6 @@ export type BeerDB = {
   price_pint: number;
   alcohol: number;
   is_available: boolean;
+  isNew: boolean;
   created_at: string;
 };
