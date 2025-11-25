@@ -1,10 +1,12 @@
 "use client";
 
+import { toast } from "sonner";
 import { BeerSlotCard } from "@/features/beerlist/components/beer-slot-card";
 import { BeerForm } from "@/features/beerlist/components/beer-form";
 import { useBeers } from "@/features/beerlist/hooks/useBeers";
-import { useBeerSlotManagement } from "@/features/beerlist/hooks/useBeerSlotManagement";
+import { useBeerSlotManagement, type ToastNotification } from "@/features/beerlist/hooks/useBeerSlotManagement";
 import type { Beer } from "@/features/beerlist/types/beers.types";
+import { useCallback } from "react";
 
 const MAX_SLOTS = 8;
 
@@ -15,6 +17,7 @@ const MAX_SLOTS = 8;
  * - ビールスロットの管理画面を提供
  * - スロット一覧表示
  * - ビール編集フォームの表示制御
+ * - 操作結果のToast通知
  *
  * 使用コンポーネント:
  * - BeerSlotCard: スロットカード表示
@@ -29,6 +32,17 @@ export default function AdminPage() {
 
   const displaySlots: (Beer | null)[] = beerSlots || Array(MAX_SLOTS).fill(null);
 
+  /**
+   * Toast通知を表示するコールバック
+   */
+  const handleNotify = useCallback((notification: ToastNotification) => {
+    if (notification.type === 'success') {
+      toast.success(notification.message);
+    } else {
+      toast.error(notification.message);
+    }
+  }, []);
+
   const {
     isFormOpen,
     currentBeer,
@@ -38,7 +52,7 @@ export default function AdminPage() {
     handleReplace,
     handleFormSubmit,
     handleCloseForm,
-  } = useBeerSlotManagement(beerSlots);
+  } = useBeerSlotManagement(beerSlots, { onNotify: handleNotify });
 
   if (isLoading) {
     return (

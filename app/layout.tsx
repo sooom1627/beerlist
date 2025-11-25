@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
 import QueryProvider from "@/components/query-provider";
 import "./globals.css";
 import { jsonLd } from "./json-ld";
@@ -47,6 +48,16 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                duration: 3000,
+                className: "text-sm",
+              }}
+              richColors
+              closeButton
+              expand={false}
+            />
             <Suspense>
               <Analytics />
               <SpeedInsights />

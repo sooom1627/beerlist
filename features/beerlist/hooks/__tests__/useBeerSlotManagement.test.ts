@@ -1,12 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useBeerSlotManagement } from '../useBeerSlotManagement';
+import { useBeerSlotManagement, type ToastNotification } from '../useBeerSlotManagement';
 import type { Beer } from '../../types/beers.types';
+
+// モック用の変数
+let mockMutateAsync: Mock;
 
 // React Queryのモック
 vi.mock('../useBeers', () => ({
   useUpsertBeer: () => ({
-    mutateAsync: vi.fn().mockResolvedValue({}),
+    mutateAsync: mockMutateAsync,
   }),
 }));
 
@@ -37,6 +40,7 @@ describe('useBeerSlotManagement', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockMutateAsync = vi.fn().mockResolvedValue({});
   });
 
   describe('初期状態', () => {
@@ -116,6 +120,226 @@ describe('useBeerSlotManagement', () => {
       });
 
       expect(result.current.currentBeer).toBeNull();
+    });
+  });
+
+  // ============================================
+  // Toast通知のテスト（TDD: 新規追加）
+  // ============================================
+  describe('Toast通知コールバック', () => {
+    describe('handleToggleAvailability', () => {
+      it('成功時にonNotifyが呼ばれる（在庫切れに変更）', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleAvailability(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: '在庫ステータスを更新しました',
+        });
+      });
+
+      it('成功時にonNotifyが呼ばれる（在庫ありに変更）', async () => {
+        const onNotify = vi.fn();
+        const unavailableBeer = { ...mockBeerSlots[0]!, isAvailable: false };
+        const slots = [unavailableBeer, null];
+        
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(slots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleAvailability(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: '在庫ステータスを更新しました',
+        });
+      });
+
+      it('失敗時にonNotifyがエラーで呼ばれる', async () => {
+        mockMutateAsync.mockRejectedValueOnce(new Error('API Error'));
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleAvailability(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'error',
+          message: '在庫ステータスの更新に失敗しました',
+        });
+      });
+
+      it('ビールが存在しないスロットでは何も起きない', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleAvailability(1); // null slot
+        });
+
+        expect(onNotify).not.toHaveBeenCalled();
+        expect(mockMutateAsync).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('handleToggleNew', () => {
+      it('成功時にonNotifyが呼ばれる', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleNew(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: '新着ステータスを更新しました',
+        });
+      });
+
+      it('失敗時にonNotifyがエラーで呼ばれる', async () => {
+        mockMutateAsync.mockRejectedValueOnce(new Error('API Error'));
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleNew(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'error',
+          message: '新着ステータスの更新に失敗しました',
+        });
+      });
+    });
+
+    describe('handleFormSubmit', () => {
+      const mockFormData = {
+        id: '1',
+        image: 'https://example.com/beer1.jpg',
+        brewery: 'Updated Brewery',
+        name: 'Updated Beer',
+        style: 'Stout',
+        location: 'Osaka',
+        description: 'Updated description',
+        price: { glass: 900, pint: 1300 },
+        alcohol: 6.0,
+        isAvailable: true,
+        isNew: true,
+      };
+
+      it('更新成功時にonNotifyが呼ばれる', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        // フォームを開く
+        act(() => {
+          result.current.handleEdit(0);
+        });
+
+        // フォーム送信
+        await act(async () => {
+          await result.current.handleFormSubmit(mockFormData);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: 'ビール情報を保存しました',
+        });
+      });
+
+      it('新規作成成功時にonNotifyが呼ばれる', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        // 入れ替えモードでフォームを開く
+        act(() => {
+          result.current.handleReplace(1);
+        });
+
+        const newBeerData = { ...mockFormData, id: undefined };
+
+        await act(async () => {
+          await result.current.handleFormSubmit(newBeerData);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: 'ビール情報を保存しました',
+        });
+      });
+
+      it('失敗時にonNotifyがエラーで呼ばれる', async () => {
+        mockMutateAsync.mockRejectedValueOnce(new Error('Save Error'));
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        act(() => {
+          result.current.handleEdit(0);
+        });
+
+        await act(async () => {
+          await result.current.handleFormSubmit(mockFormData);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'error',
+          message: '保存に失敗しました',
+        });
+      });
+
+      it('editingSlotIndexがnullの場合は何もしない', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        // フォームを開かない状態で送信
+        await act(async () => {
+          await result.current.handleFormSubmit(mockFormData);
+        });
+
+        expect(onNotify).not.toHaveBeenCalled();
+        expect(mockMutateAsync).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('onNotifyが未設定の場合', () => {
+      it('onNotify未設定でもエラーにならない', async () => {
+        const { result } = renderHook(() => 
+          useBeerSlotManagement(mockBeerSlots)
+        );
+
+        // エラーなく実行できること
+        await act(async () => {
+          await result.current.handleToggleAvailability(0);
+        });
+
+        expect(mockMutateAsync).toHaveBeenCalled();
+      });
     });
   });
 });

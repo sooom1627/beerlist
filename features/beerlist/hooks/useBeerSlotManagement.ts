@@ -5,6 +5,21 @@ import { useUpsertBeer } from "./useBeers";
 import { uploadBeerImage } from "../api/beers.api";
 
 /**
+ * Toast通知の型定義
+ */
+export interface ToastNotification {
+  type: 'success' | 'error';
+  message: string;
+}
+
+/**
+ * useBeerSlotManagementのオプション
+ */
+interface UseBeerSlotManagementOptions {
+  onNotify?: (notification: ToastNotification) => void;
+}
+
+/**
  * ビールスロット管理フック
  * 管理画面でのビールスロット操作ロジックを提供
  *
@@ -13,8 +28,13 @@ import { uploadBeerImage } from "../api/beers.api";
  * - 在庫ステータス切り替え
  * - 新着ステータス切り替え
  * - フォーム送信処理
+ * - 通知コールバック
  */
-export function useBeerSlotManagement(beerSlots: (Beer | null)[] | undefined) {
+export function useBeerSlotManagement(
+  beerSlots: (Beer | null)[] | undefined,
+  options?: UseBeerSlotManagementOptions
+) {
+  const { onNotify } = options ?? {};
   const upsertBeerMutation = useUpsertBeer();
   const [editingSlotIndex, setEditingSlotIndex] = useState<number | null>(null);
   const [editMode, setEditMode] = useState<'update' | 'replace'>('update');
@@ -33,9 +53,16 @@ export function useBeerSlotManagement(beerSlots: (Beer | null)[] | undefined) {
           ...beerData,
           isAvailable: !beer.isAvailable,
         });
+        onNotify?.({
+          type: 'success',
+          message: '在庫ステータスを更新しました',
+        });
       } catch (error) {
         console.error("Failed to toggle availability:", error);
-        alert("在庫ステータスの切り替えに失敗しました。");
+        onNotify?.({
+          type: 'error',
+          message: '在庫ステータスの更新に失敗しました',
+        });
       }
     }
   };
@@ -52,9 +79,16 @@ export function useBeerSlotManagement(beerSlots: (Beer | null)[] | undefined) {
           ...beerData,
           isNew: !beer.isNew,
         });
+        onNotify?.({
+          type: 'success',
+          message: '新着ステータスを更新しました',
+        });
       } catch (error) {
         console.error("Failed to toggle new status:", error);
-        alert("新着ステータスの切り替えに失敗しました。");
+        onNotify?.({
+          type: 'error',
+          message: '新着ステータスの更新に失敗しました',
+        });
       }
     }
   };
@@ -107,9 +141,16 @@ export function useBeerSlotManagement(beerSlots: (Beer | null)[] | undefined) {
         });
         setEditingSlotIndex(null);
         setIsFormOpen(false);
+        onNotify?.({
+          type: 'success',
+          message: 'ビール情報を保存しました',
+        });
       } catch (error) {
         console.error("Failed to submit form:", error);
-        alert("保存に失敗しました。");
+        onNotify?.({
+          type: 'error',
+          message: '保存に失敗しました',
+        });
       } finally {
         setIsSubmitting(false);
       }
