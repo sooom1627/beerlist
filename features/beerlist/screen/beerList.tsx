@@ -119,11 +119,11 @@ export function BeerList() {
                 <div className="flex items-end justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800/50 border-dashed">
                   <div className="flex items-center gap-6 font-mono text-xs">
                     <div className="flex flex-col">
-                      <span className="text-zinc-400 text-[10px] uppercase mb-0.5">Glass</span>
+                      <span className="text-zinc-400 text-[10px] uppercase mb-0.5">Glass(<span className="text-zinc-400 text-[10px] lowercase">250ml</span>)</span>
                       <span className="font-medium text-zinc-900 dark:text-zinc-200">¥{beer.price.glass}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-zinc-400 text-[10px] uppercase mb-0.5">Pint</span>
+                      <span className="text-zinc-400 text-[10px] uppercase mb-0.5">Pint(<span className="text-zinc-400 text-[10px] lowercase">470ml</span>)</span>
                       <span className="font-medium text-zinc-900 dark:text-zinc-200">¥{beer.price.pint}</span>
                     </div>
                   </div>
