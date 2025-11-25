@@ -33,6 +33,6 @@ export type BeerDB = {
   price_pint: number;
   alcohol: number;
   is_available: boolean;
-  is_new: boolean;
+  isNew: boolean;
   created_at: string;
 };

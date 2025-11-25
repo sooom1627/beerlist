@@ -62,6 +62,7 @@ export const useUpsertBeer = () => {
               price: newBeer.price,
               alcohol: newBeer.alcohol,
               isAvailable: newBeer.isAvailable,
+              isNew: newBeer.isNew,
             };
             
             newSlots[index] = optimisticBeer;
