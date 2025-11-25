@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, Check, X } from "lucide-react";
+import { Edit2, Check, X, RefreshCcw } from "lucide-react";
 import type { Beer } from "../types/beers.types";
 
 interface BeerSlotCardProps {
@@ -47,15 +47,15 @@ export function BeerSlotCard({
 
   return (
     <Card
-      className={`transition-all duration-200 ${
+      className={`group relative transition-all duration-200 ${
         !beer.isAvailable ? "opacity-60" : ""
       }`}
     >
       <CardHeader className="pb-2">
         <div className="flex items-start justify-between mb-2">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
+          <div className="flex items-start gap-3 flex-1 min-w-0 pt-2">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-white rounded p-1.5 flex items-center justify-center border border-border">
+              <div className="w-12 h-12 bg-white rounded p-1.5 flex items-center justify-center border border-border pt-2">
                 <img
                   src={beer.image}
                   alt={beer.name}
@@ -137,10 +137,21 @@ export function BeerSlotCard({
             編集
           </Button>
           <Button onClick={onReplace} variant="destructive" size="sm" className="flex-1">
-            <Edit2 className="h-4 w-4 mr-1" />
+            <RefreshCcw className="h-4 w-4 mr-1" />
             入れ替え
           </Button>
         </div>
+        {beer.isNew && (
+          <div className="absolute -top-0 left-6 z-10 flex items-center gap-1.5 mb-1.5 animate-in fade-in slide-in-from-left-2 duration-500">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
+            <span className="text-[10px] font-bold tracking-[0.2em] text-amber-600 dark:text-amber-500 uppercase">
+              New Tap!
+            </span>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
