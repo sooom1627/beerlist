@@ -156,7 +156,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       if (!open) return;
     }}>
       <DialogContent
-        className="sm:max-w-[600px] w-[95vw] max-h-[90vh] p-0 gap-0 overflow-hidden rounded-2xl bg-background shadow-2xl [&>button]:hidden border-none flex flex-col"
+        className="sm:max-w-[600px] w-11/12 max-h-[90vh] p-0 gap-0 overflow-hidden rounded-2xl bg-background shadow-2xl [&>button]:hidden border-none flex flex-col"
         onInteractOutside={(e) => e.preventDefault()}
       >
         {/* ヘッダー */}

@@ -63,7 +63,7 @@ export function DraftSelectionDialog({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-3xl max-h-[80vh] flex flex-col">
+        <DialogContent className="max-w-3xl w-11/12 max-h-[90vh] flex flex-col rounded-2xl">
           <DialogHeader>
             <DialogTitle>下書きからビールを選択</DialogTitle>
             <DialogDescription>
@@ -77,7 +77,7 @@ export function DraftSelectionDialog({
               <Loader2 className="h-8 w-8 animate-spin" />
             </div>
           ) : drafts && drafts.length > 0 ? (
-            <ScrollArea className="flex-1 -mx-4 px-4">
+            <ScrollArea className="flex-1 -mx-4 px-4 min-h-0 overflow-y-scroll scrollbar-hide">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
                 {drafts.map((draft) => (
                   <DraftBeerCard
@@ -100,7 +100,7 @@ export function DraftSelectionDialog({
       </Dialog>
 
       <AlertDialog open={!!selectedDraft} onOpenChange={(open) => !open && setSelectedDraft(null)}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-3xl w-11/12 max-h-[90vh] flex flex-col rounded-2xl">
           <AlertDialogHeader>
             <AlertDialogTitle>反映確認</AlertDialogTitle>
             <AlertDialogDescription>
