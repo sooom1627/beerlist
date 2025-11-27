@@ -17,6 +17,20 @@ interface ReleaseItem {
 const releaseHistory: ReleaseItem[] = [
   {
     date: "2025-11-27",
+    version: "v1.4.1",
+    changes: [
+      {
+        type: "enhancement",
+        description: "ナビゲーションの改善：ヘッダーメニューを整理し、アイコン付きのボタンデザインに変更しました。「メニュー画面」と「ビール設定」へのアクセスが容易になりました。",
+      },
+      {
+        type: "feature",
+        description: "情報ページの実装：利用規約とリリースノートの閲覧ページを追加し、フッターからアクセスできるようにしました。",
+      },
+    ],
+  },
+  {
+    date: "2025-11-27",
     version: "v1.4.0",
     changes: [
       {
@@ -31,6 +45,7 @@ const releaseHistory: ReleaseItem[] = [
   },
   {
     date: "2025-11-26",
+    version: "v1.3.0",
     changes: [
       {
         type: "feature",
@@ -52,6 +67,7 @@ const releaseHistory: ReleaseItem[] = [
   },
   {
     date: "2025-11-25",
+    version: "v1.2.0",
     changes: [
       {
         type: "feature",
@@ -65,6 +81,7 @@ const releaseHistory: ReleaseItem[] = [
   },
   {
     date: "2025-11-23",
+    version: "v1.1.1",
     changes: [
       {
         type: "perf",

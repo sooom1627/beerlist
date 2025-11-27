@@ -1,11 +1,16 @@
 import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { Beer, Store } from "lucide-react";
+import { Beer, Menu, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function AdminLayout({
   children,
@@ -15,22 +20,34 @@ export default function AdminLayout({
   return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16 sticky top-0 bg-background/80 backdrop-blur-sm z-50">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-2 items-center">
-              <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-                <Link href="/">
-                  <Store className="h-4 w-4" />
-                  メニュー画面
-                </Link>
-              </Button>
-              <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
-                <Link href="/admin">
-                  <Beer className="h-4 w-4" />
-                  ビール設定
-                </Link>
-              </Button>
+            {/* Navigation Menu (Always Hamburger) */}
+            <div className="flex items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="-ml-2">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">メニューを開く</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/" className="flex items-center gap-2 cursor-pointer">
+                      <Store className="h-4 w-4" />
+                      <span>TOPページ</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin" className="flex items-center gap-2 cursor-pointer">
+                      <Beer className="h-4 w-4" />
+                      <span>ビール設定</span>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
+
             <Suspense>
               <AuthButton />
             </Suspense>
@@ -53,7 +70,7 @@ export default function AdminLayout({
           >
             リリースノート
           </Link>
-          <span className="text-muted-foreground">v1.4.0</span>
+          <span className="text-muted-foreground">v1.4.1</span>
           <ThemeSwitcher />
         </footer>
       </div>
