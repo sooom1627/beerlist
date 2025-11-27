@@ -4,6 +4,9 @@ import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { Beer, Store } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 export default function AdminLayout({
   children,
 }: {
@@ -14,12 +17,23 @@ export default function AdminLayout({
       <div className="flex-1 w-full flex flex-col items-center">
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
           <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>リスト画面へ</Link>
+            <div className="flex gap-2 items-center">
+              <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
+                <Link href="/">
+                  <Store className="h-4 w-4" />
+                  メニュー画面
+                </Link>
+              </Button>
+              <Button variant="ghost" asChild className="text-muted-foreground hover:text-foreground">
+                <Link href="/admin">
+                  <Beer className="h-4 w-4" />
+                  ビール設定
+                </Link>
+              </Button>
             </div>
-              <Suspense>
-                <AuthButton />
-              </Suspense>
+            <Suspense>
+              <AuthButton />
+            </Suspense>
           </div>
         </nav>
         <div className="flex-1 flex flex-col gap-20 w-full max-w-5xl p-5">
@@ -27,6 +41,19 @@ export default function AdminLayout({
         </div>
 
         <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
+          <Link
+            href="/admin/terms"
+            className="text-muted-foreground hover:underline"
+          >
+            利用規約
+          </Link>
+          <Link
+            href="/admin/release-notes"
+            className="text-muted-foreground hover:underline"
+          >
+            リリースノート
+          </Link>
+          <span className="text-muted-foreground">v1.4.0</span>
           <ThemeSwitcher />
         </footer>
       </div>
