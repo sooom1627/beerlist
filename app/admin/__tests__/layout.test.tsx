@@ -42,7 +42,7 @@ describe("AdminLayout", () => {
     );
     // "v" で始まるテキストを探すか、具体的なバージョンを指定するか
     // ここでは "v1.4.1" を期待値とする
-    expect(screen.getByText("v1.4.1")).toBeInTheDocument();
+    expect(screen.getByText("v1.4.2")).toBeInTheDocument();
   });
 });
 

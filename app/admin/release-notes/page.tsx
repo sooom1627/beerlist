@@ -17,6 +17,16 @@ interface ReleaseItem {
 const releaseHistory: ReleaseItem[] = [
   {
     date: "2025-11-27",
+    version: "v1.4.2",
+    changes: [
+      {
+        type: "enhancement",
+        description: "ダイアログコンポーネントの改善：レイアウトとレスポンシブ対応を向上させました。",
+      },
+    ],
+  },
+  {
+    date: "2025-11-27",
     version: "v1.4.1",
     changes: [
       {
