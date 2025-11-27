@@ -39,6 +39,35 @@ export type Beer = {
   isNew: boolean;
 };
 
+export type DraftBeer = Omit<Beer, "id" | "tapNumber" | "isAvailable" | "isNew" | "createdAt"> & {
+  id: number;
+  createdAt: string;
+};
+
+export type DraftBeerDB = Omit<BeerDB, "id" | "tap_number" | "is_available" | "isNew" | "created_at"> & {
+  id: number;
+  created_at: string;
+};
+
+// Transform function to convert DraftBeerDB to DraftBeer
+export function transformDraftBeerDBToDraftBeer(draftDB: DraftBeerDB): DraftBeer {
+  return {
+    id: draftDB.id,
+    image: draftDB.image,
+    brewery: draftDB.brewery,
+    name: draftDB.name,
+    style: draftDB.style,
+    location: draftDB.location,
+    description: draftDB.description,
+    price: {
+      glass: draftDB.price_glass,
+      pint: draftDB.price_pint,
+    },
+    alcohol: draftDB.alcohol,
+    createdAt: draftDB.created_at,
+  };
+}
+
 export type BeerList = Beer[];
 
 // Transform function to convert BeerDB to Beer
