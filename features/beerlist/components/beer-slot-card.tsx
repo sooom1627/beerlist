@@ -12,6 +12,7 @@ interface BeerSlotCardProps {
   onToggleNew: () => void;
   onEdit: () => void;
   onReplace: () => void;
+  onLoadFromDraft: () => void;
 }
 
 /**
@@ -36,10 +37,11 @@ export function BeerSlotCard({
   onToggleNew,
   onEdit,
   onReplace,
+  onLoadFromDraft,
 }: BeerSlotCardProps) {
   // 空きスロットの場合
   if (!beer) {
-    return <EmptySlot slotIndex={slotIndex} onEdit={onEdit} />;
+    return <EmptySlot slotIndex={slotIndex} onEdit={onEdit} onLoadFromDraft={onLoadFromDraft} />;
   }
 
   // ビール情報がある場合
@@ -75,6 +77,7 @@ export function BeerSlotCard({
           onToggleNew={onToggleNew}
           onEdit={onEdit}
           onReplace={onReplace}
+          onLoadFromDraft={onLoadFromDraft}
         />
 
         {/* 新着バッジ */}
