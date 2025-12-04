@@ -16,6 +16,20 @@ interface ReleaseItem {
 
 const releaseHistory: ReleaseItem[] = [
   {
+    date: "2025-01-27",
+    version: "v1.4.3",
+    changes: [
+      {
+        type: "fix",
+        description: "セキュリティアップデート：Next.js 16.0.7、React 19.2.1、react-dom 19.2.1へのアップグレードにより、CVE-2025-55182の脆弱性を修正しました。",
+      },
+      {
+        type: "enhancement",
+        description: "価格表示の改善：グラスとパイントの価格が0の場合に-（ハイフン）を表示するようにしました。",
+      },
+    ],
+  },
+  {
     date: "2025-11-27",
     version: "v1.4.2",
     changes: [
