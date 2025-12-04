@@ -16,7 +16,7 @@ interface ReleaseItem {
 
 const releaseHistory: ReleaseItem[] = [
   {
-    date: "2025-01-27",
+    date: "2025-12-05",
     version: "v1.4.3",
     changes: [
       {
