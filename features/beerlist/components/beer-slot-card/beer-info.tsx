@@ -21,7 +21,7 @@ interface BeerInfoProps {
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
   // 一意のIDを生成（スロットインデックスを使用）
-  const clipPathId = `clip-circle-info-${slotIndex}`;
+  const clipPathId = `clip-square-info-${slotIndex}`;
 
   return (
     <CardHeader className="pb-2">
@@ -54,17 +54,17 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
                   >
                     <defs>
                       <clipPath id={clipPathId}>
-                        <circle cx="12" cy="12" r="9" />
+                        <rect x="3" y="3" width="18" height="18" rx="5" />
                       </clipPath>
                     </defs>
                     <g clipPath={`url(#${clipPathId})`}>
-                      <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.2" />
+                      <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
                       <path 
-                        d="M2 12C2 12 5 10 12 10C19 10 22 12 22 12V22H2V12Z" 
+                        d="M1 14C1 14 6 11 12 11C18 11 23 14 23 14V23H1V14Z" 
                         fill={beer.color} 
                       />
                     </g>
-                    <circle cx="12" cy="12" r="9" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
+                    <rect x="3" y="3" width="18" height="18" rx="5" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
                   </svg>
                 </div>
               )}

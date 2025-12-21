@@ -61,8 +61,8 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
               <div className="flex items-center gap-2">
                 {/* 
-                  Beer Color Indicator - Minimal Circle Wave
-                  円の中に波打つ液体を表現した幾何学的でモダンなデザイン
+                  Beer Color Indicator - Modern Liquid Cube
+                  角丸四角形の中に波打つ液体を表現したデザイン
                 */}
                 {beer.color && (
                   <div 
@@ -77,21 +77,21 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       className="drop-shadow-sm"
                     >
                       <defs>
-                        <clipPath id={`clip-circle-${index}`}>
-                          <circle cx="12" cy="12" r="9" />
+                        <clipPath id={`clip-square-${index}`}>
+                          <rect x="3" y="3" width="18" height="18" rx="5" />
                         </clipPath>
                       </defs>
-                      <g clipPath={`url(#clip-circle-${index})`}>
+                      <g clipPath={`url(#clip-square-${index})`}>
                         {/* 背景（薄い色） */}
-                        <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.2" />
+                        <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
                         {/* 液体部分（波打つ形状） */}
                         <path 
-                          d="M2 12C2 12 5 10 12 10C19 10 22 12 22 12V22H2V12Z" 
+                          d="M1 14C1 14 6 11 12 11C18 11 23 14 23 14V23H1V14Z" 
                           fill={beer.color} 
                         />
                       </g>
                       {/* 外枠 */}
-                      <circle cx="12" cy="12" r="9" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
+                      <rect x="3" y="3" width="18" height="18" rx="5" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
                     </svg>
                   </div>
                 )}
