@@ -60,8 +60,15 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
                     <g clipPath={`url(#${clipPathId})`}>
                       <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
                       <path 
-                        d="M1 15C1 15 5 12 12 12C19 12 23 15 23 15V23H1V15Z" 
+                        d="M1 13C1 13 5 16 10 13C15 10 19 16 23 13V23H1V13Z" 
                         fill={beer.color} 
+                      />
+                      <path 
+                        d="M4 15C4 15 6 16 8 15" 
+                        stroke="white" 
+                        strokeWidth="1" 
+                        strokeLinecap="round" 
+                        opacity="0.3" 
                       />
                     </g>
                     <rect x="3" y="3" width="18" height="18" rx="5" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />

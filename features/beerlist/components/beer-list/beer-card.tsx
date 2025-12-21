@@ -84,10 +84,18 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       <g clipPath={`url(#clip-square-${index})`}>
                         {/* 背景（薄い色） */}
                         <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
-                        {/* 液体部分（より滑らかな波） */}
+                        {/* 液体部分（強調された波） */}
                         <path 
-                          d="M1 15C1 15 5 12 12 12C19 12 23 15 23 15V23H1V15Z" 
+                          d="M1 13C1 13 5 16 10 13C15 10 19 16 23 13V23H1V13Z" 
                           fill={beer.color} 
+                        />
+                        {/* ハイライト（液体の艶） */}
+                        <path 
+                          d="M4 15C4 15 6 16 8 15" 
+                          stroke="white" 
+                          strokeWidth="1" 
+                          strokeLinecap="round" 
+                          opacity="0.3" 
                         />
                       </g>
                       {/* 外枠 */}
