@@ -39,7 +39,7 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
             <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
               {beer.color && (
                 <div 
-                  className="flex items-center justify-center w-5 h-5 rounded-sm bg-muted/50 border border-border mr-1 p-0.5"
+                  className="flex items-center justify-center w-5 h-5 mr-1 shrink-0"
                   title="Beer Color"
                 >
                   <svg
@@ -53,9 +53,9 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
                     strokeLinejoin="round"
                     className="text-muted-foreground"
                   >
-                    <path d="M19 3H5v1.5l1.5 15.5a2 2 0 0 0 2 1.5h7a2 2 0 0 0 2-1.5L19 4.5V3z" />
+                    <path d="M7 3h10l-1 12a6 6 0 0 1-6 6h-0a6 6 0 0 1-6-6L7 3z" />
                     <path 
-                      d="M6.5 7h11l-1.2 11.5a1 1 0 0 1-1 .5h-6.6a1 1 0 0 1-1-.5L6.5 7z" 
+                      d="M7.5 7h9l-.8 8.5a5 5 0 0 1-5 4.5h-0a5 5 0 0 1-5-4.5L7.5 7z" 
                       fill={beer.color} 
                       stroke="none"
                     />

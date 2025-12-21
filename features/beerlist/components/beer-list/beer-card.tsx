@@ -66,7 +66,7 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                 */}
                 {beer.color && (
                   <div 
-                    className="flex items-center justify-center w-6 h-6 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 shadow-sm shrink-0 p-0.5"
+                    className="flex items-center justify-center w-6 h-6 shrink-0"
                     title="Beer Color"
                   >
                     <svg
@@ -80,17 +80,17 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       strokeLinejoin="round"
                       className="text-zinc-400 dark:text-zinc-500"
                     >
-                      {/* パイントグラス形状 */}
-                      <path d="M19 3H5v1.5l1.5 15.5a2 2 0 0 0 2 1.5h7a2 2 0 0 0 2-1.5L19 4.5V3z" />
+                      {/* チューリップグラス形状 - より曲線的でおしゃれに */}
+                      <path d="M7 3h10l-1 12a6 6 0 0 1-6 6h-0a6 6 0 0 1-6-6L7 3z" />
                       {/* 液体 */}
                       <path 
-                        d="M6.5 7h11l-1.2 11.5a1 1 0 0 1-1 .5h-6.6a1 1 0 0 1-1-.5L6.5 7z" 
+                        d="M7.5 7h9l-.8 8.5a5 5 0 0 1-5 4.5h-0a5 5 0 0 1-5-4.5L7.5 7z" 
                         fill={beer.color} 
                         stroke="none"
                         className="opacity-90"
                       />
-                      {/* 泡のライン（オプション） */}
-                      <path d="M6.5 7h11" stroke={beer.color} strokeWidth="0.5" className="opacity-50" />
+                      {/* 泡のライン */}
+                      <path d="M7.5 7h9" stroke={beer.color} strokeWidth="1" className="opacity-50" />
                     </svg>
                   </div>
                 )}

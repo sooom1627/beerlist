@@ -1,27 +1,64 @@
 import React, { useState, useEffect } from "react";
-import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import {
+  UseFormRegister,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import type { BeerFormData } from "../../types/beer-form.types";
 
 const PRESET_COLORS = [
   { label: "Wheat", value: "#F3E5AB" }, // Cornsilk
-  { label: "IPA", value: "#FFD700" },   // Gold
-  { label: "Ale", value: "#CD853F" },   // Peru
+  { label: "IPA", value: "#FFD700" }, // Gold
+  { label: "Ale", value: "#CD853F" }, // Peru
   { label: "Stout", value: "#2F1B1B" }, // Dark
 ];
 
 // SRM (Standard Reference Method) Color Approximation
 // 1-40 scale
 const SRM_COLORS: { [key: number]: string } = {
-    1: "#FFE699", 2: "#FFD878", 3: "#FFCA5A", 4: "#FFBF42", 5: "#FBB123",
-    6: "#F8A600", 7: "#F39C00", 8: "#EA8F00", 9: "#E58500", 10: "#DE7C00",
-    11: "#D77200", 12: "#CF6900", 13: "#CB6200", 14: "#C35900", 15: "#BB5100",
-    16: "#B54C00", 17: "#B04500", 18: "#A63E00", 19: "#A13700", 20: "#9B3200",
-    21: "#952D00", 22: "#8E2900", 23: "#882300", 24: "#821E00", 25: "#7B1A00",
-    26: "#771900", 27: "#701400", 28: "#6A0E00", 29: "#660D00", 30: "#5E0B00",
-    31: "#5A0A02", 32: "#600903", 33: "#520907", 34: "#4C0505", 35: "#470606",
-    36: "#420607", 37: "#3D0708", 38: "#370607", 39: "#2D0607", 40: "#1F0506"
+  1: "#FFE699",
+  2: "#FFD878",
+  3: "#FFCA5A",
+  4: "#FFBF42",
+  5: "#FBB123",
+  6: "#F8A600",
+  7: "#F39C00",
+  8: "#EA8F00",
+  9: "#E58500",
+  10: "#DE7C00",
+  11: "#D77200",
+  12: "#CF6900",
+  13: "#CB6200",
+  14: "#C35900",
+  15: "#BB5100",
+  16: "#B54C00",
+  17: "#B04500",
+  18: "#A63E00",
+  19: "#A13700",
+  20: "#9B3200",
+  21: "#952D00",
+  22: "#8E2900",
+  23: "#882300",
+  24: "#821E00",
+  25: "#7B1A00",
+  26: "#771900",
+  27: "#701400",
+  28: "#6A0E00",
+  29: "#660D00",
+  30: "#5E0B00",
+  31: "#5A0A02",
+  32: "#600903",
+  33: "#520907",
+  34: "#4C0505",
+  35: "#470606",
+  36: "#420607",
+  37: "#3D0708",
+  38: "#370607",
+  39: "#2D0607",
+  40: "#1F0506",
 };
 
 interface BeerColorPickerProps {
@@ -31,7 +68,12 @@ interface BeerColorPickerProps {
   watch: UseFormWatch<BeerFormData>;
 }
 
-export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColorPickerProps) => {
+export const BeerColorPicker = ({
+  register,
+  errors,
+  setValue,
+  watch,
+}: BeerColorPickerProps) => {
   const selectedColor = watch("color");
   const [customSrm, setCustomSrm] = useState<number>(5);
   const [isCustomMode, setIsCustomMode] = useState(false);
@@ -43,13 +85,15 @@ export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColor
       return;
     }
 
-    const isPreset = PRESET_COLORS.some(p => p.value === selectedColor);
+    const isPreset = PRESET_COLORS.some((p) => p.value === selectedColor);
     if (!isPreset) {
       setIsCustomMode(true);
       // 既存のカスタム色に近いSRMを探してスライダーの位置を合わせる（簡易実装）
-      const srmEntry = Object.entries(SRM_COLORS).find(([_, color]) => color.toLowerCase() === selectedColor.toLowerCase());
+      const srmEntry = Object.entries(SRM_COLORS).find(
+        ([_, color]) => color.toLowerCase() === selectedColor.toLowerCase()
+      );
       if (srmEntry) {
-          setCustomSrm(Number(srmEntry[0]));
+        setCustomSrm(Number(srmEntry[0]));
       }
     } else {
       setIsCustomMode(false);
@@ -59,7 +103,11 @@ export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColor
   const handlePresetClick = (color: string) => {
     // 選択済みの色をクリックした場合は解除する
     const newValue = selectedColor === color ? null : color;
-    setValue("color", newValue, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+    setValue("color", newValue, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
     setIsCustomMode(false);
   };
 
@@ -67,14 +115,18 @@ export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColor
     const srm = Number(e.target.value);
     setCustomSrm(srm);
     const color = SRM_COLORS[srm];
-    setValue("color", color, { shouldDirty: true, shouldTouch: true, shouldValidate: true });
+    setValue("color", color, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
     setIsCustomMode(true);
   };
 
   return (
     <div className="space-y-3">
       <Label>Beer Color</Label>
-      
+
       {/* Presets */}
       <div className="flex flex-wrap gap-4 items-center mb-2">
         {PRESET_COLORS.map((preset) => (
@@ -91,12 +143,12 @@ export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColor
             style={{ backgroundColor: preset.value }}
             title={preset.label}
           >
-             {selectedColor === preset.value && !isCustomMode && (
-                <span className="text-primary-foreground font-bold drop-shadow-md">
-                  ✓
-                </span>
-             )}
-             <span className="sr-only">{preset.label}</span>
+            {selectedColor === preset.value && !isCustomMode && (
+              <span className="text-primary-foreground font-bold drop-shadow-md">
+                ✓
+              </span>
+            )}
+            <span className="sr-only">{preset.label}</span>
           </button>
         ))}
       </div>
@@ -104,50 +156,54 @@ export const BeerColorPicker = ({ register, errors, setValue, watch }: BeerColor
       {/* Custom Slider */}
       <div className="space-y-2 p-3 border rounded-lg bg-slate-50 dark:bg-slate-900/50">
         <div className="flex items-center justify-between">
-           <Label htmlFor="srm-slider" className="text-xs text-muted-foreground">Custom (SRM Scale)</Label>
-           <div className="flex items-center gap-2">
-               <span className="text-xs font-mono text-muted-foreground">SRM: {customSrm}</span>
-               <div 
-                  className={cn(
-                    "w-6 h-6 rounded-full border shadow-sm transition-all",
-                    isCustomMode && "ring-2 ring-primary ring-offset-1"
-                  )}
-                  style={{ backgroundColor: SRM_COLORS[customSrm] }} 
-               />
-           </div>
+          <Label htmlFor="srm-slider" className="text-xs text-muted-foreground">
+            Custom (SRM Scale)
+          </Label>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-muted-foreground">
+              SRM: {customSrm}
+            </span>
+            <div
+              className={cn(
+                "w-6 h-6 rounded-full border shadow-sm transition-all",
+                isCustomMode && "ring-2 ring-primary ring-offset-1"
+              )}
+              style={{ backgroundColor: SRM_COLORS[customSrm] }}
+            />
+          </div>
         </div>
         <div className="relative h-6 w-full rounded-full overflow-hidden border border-gray-200">
-           {/* Gradient Background */}
-           <div 
-             className="absolute inset-0 w-full h-full"
-             style={{
-               background: `linear-gradient(to right, 
+          {/* Gradient Background */}
+          <div
+            className="absolute inset-0 w-full h-full"
+            style={{
+              background: `linear-gradient(to right, 
                  ${SRM_COLORS[1]} 0%, 
                  ${SRM_COLORS[10]} 25%, 
                  ${SRM_COLORS[20]} 50%, 
                  ${SRM_COLORS[30]} 75%, 
-                 ${SRM_COLORS[40]} 100%)`
-             }}
-           />
-           <input
-             id="srm-slider"
-             type="range"
-             min="1"
-             max="40"
-             step="1"
-             value={customSrm}
-             onChange={handleCustomChange}
-             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-             aria-label="Beer Color Slider"
-           />
+                 ${SRM_COLORS[40]} 100%)`,
+            }}
+          />
+          <input
+            id="srm-slider"
+            type="range"
+            min="1"
+            max="40"
+            step="1"
+            value={customSrm}
+            onChange={handleCustomChange}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            aria-label="Beer Color Slider"
+          />
         </div>
         <p className="text-[10px] text-muted-foreground text-center">
-            Slide to select a custom beer color
+          Slide to select a custom beer color
         </p>
       </div>
 
       <input type="hidden" {...register("color")} />
-       {errors.color && (
+      {errors.color && (
         <p className="text-sm text-red-500">{errors.color.message}</p>
       )}
     </div>
