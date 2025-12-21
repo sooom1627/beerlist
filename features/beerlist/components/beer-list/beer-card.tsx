@@ -59,17 +59,14 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             </CardDescription>
 
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
-              {/* ビールカラー（大型表示） */}
-              {beer.color && (
-                <div
-                  className="w-5 h-5 rounded-full border border-black/10 shadow-sm shrink-0"
-                  style={{ backgroundColor: beer.color }}
-                  title="Beer Color"
-                  aria-label={`Beer color: ${beer.color}`}
-                />
-              )}
-              
-              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[10px] tracking-wider font-medium uppercase">
+              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[10px] tracking-wider font-medium uppercase flex items-center gap-1.5">
+                {beer.color && (
+                  <span
+                    className="w-2 h-2 rounded-full border border-black/10 inline-block"
+                    style={{ backgroundColor: beer.color }}
+                    aria-hidden="true"
+                  />
+                )}
                 {beer.style}
               </span>
               <span className="font-mono text-[10px]">
