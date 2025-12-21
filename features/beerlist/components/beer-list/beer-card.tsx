@@ -62,16 +62,16 @@ export function BeerCard({ beer, index }: BeerCardProps) {
               <div className="flex items-center gap-2">
                 {/* 
                   Beer Glass Icon Indicator
-                  シンプルに「ビールの色」を示すアイコンを表示
+                  パイントグラス形状で液体色を表示
                 */}
                 {beer.color && (
                   <div 
-                    className="flex items-center justify-center p-1.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 shadow-sm"
+                    className="flex items-center justify-center w-6 h-6 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 shadow-sm shrink-0 p-0.5"
                     title="Beer Color"
                   >
                     <svg
-                      width="16"
-                      height="16"
+                      width="100%"
+                      height="100%"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -80,18 +80,17 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       strokeLinejoin="round"
                       className="text-zinc-400 dark:text-zinc-500"
                     >
-                      <path d="M17 11h1a3 3 0 0 1 0 6h-1" />
-                      <path d="M9 12h6" />
-                      <path d="M8 21h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" />
-                      <line x1="6" x2="6" y1="22" y2="22" />
-                      <line x1="18" x2="18" y1="22" y2="22" />
-                      {/* Fill color */}
+                      {/* パイントグラス形状 */}
+                      <path d="M19 3H5v1.5l1.5 15.5a2 2 0 0 0 2 1.5h7a2 2 0 0 0 2-1.5L19 4.5V3z" />
+                      {/* 液体 */}
                       <path 
-                        d="M8 21h8a2 2 0 0 0 2-2v-9H6v9a2 2 0 0 0 2 2z" 
+                        d="M6.5 7h11l-1.2 11.5a1 1 0 0 1-1 .5h-6.6a1 1 0 0 1-1-.5L6.5 7z" 
                         fill={beer.color} 
                         stroke="none"
                         className="opacity-90"
                       />
+                      {/* 泡のライン（オプション） */}
+                      <path d="M6.5 7h11" stroke={beer.color} strokeWidth="0.5" className="opacity-50" />
                     </svg>
                   </div>
                 )}
