@@ -47,17 +47,16 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
                     height="100%"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-muted-foreground"
+                    className="drop-shadow-sm"
                   >
-                    <path d="M7 3h10l-1 12a6 6 0 0 1-6 6h-0a6 6 0 0 1-6-6L7 3z" />
                     <path 
-                      d="M7.5 7h9l-.8 8.5a5 5 0 0 1-5 4.5h-0a5 5 0 0 1-5-4.5L7.5 7z" 
+                      d="M17 7V13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13V7C7 7 8.5 8.5 12 8.5C15.5 8.5 17 7 17 7Z" 
                       fill={beer.color} 
-                      stroke="none"
+                    />
+                    <path 
+                      d="M17 7C17 7 15.5 8.5 12 8.5C8.5 8.5 7 7 7 7V6C7 6 8.5 7.5 12 7.5C15.5 7.5 17 6 17 6V7Z" 
+                      fill="white"
+                      fillOpacity="0.4"
                     />
                   </svg>
                 </div>

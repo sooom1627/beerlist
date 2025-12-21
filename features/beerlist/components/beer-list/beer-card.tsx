@@ -61,8 +61,8 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
               <div className="flex items-center gap-2">
                 {/* 
-                  Beer Glass Icon Indicator
-                  パイントグラス形状で液体色を表示
+                  Beer Color Indicator - Abstract Liquid Form
+                  線画を排除し、色と形だけで「ビール」を表現するミニマルデザイン
                 */}
                 {beer.color && (
                   <div 
@@ -74,23 +74,22 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       height="100%"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-zinc-400 dark:text-zinc-500"
+                      className="drop-shadow-sm"
                     >
-                      {/* チューリップグラス形状 - より曲線的でおしゃれに */}
-                      <path d="M7 3h10l-1 12a6 6 0 0 1-6 6h-0a6 6 0 0 1-6-6L7 3z" />
-                      {/* 液体 */}
+                      {/* 
+                        抽象的なグラスシルエット（液体部分のみ）
+                        上部の波線で液体感を演出
+                      */}
                       <path 
-                        d="M7.5 7h9l-.8 8.5a5 5 0 0 1-5 4.5h-0a5 5 0 0 1-5-4.5L7.5 7z" 
+                        d="M17 7V13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13V7C7 7 8.5 8.5 12 8.5C15.5 8.5 17 7 17 7Z" 
                         fill={beer.color} 
-                        stroke="none"
-                        className="opacity-90"
                       />
-                      {/* 泡のライン */}
-                      <path d="M7.5 7h9" stroke={beer.color} strokeWidth="1" className="opacity-50" />
+                      {/* 泡のアクセント（半透明の白） */}
+                      <path 
+                        d="M17 7C17 7 15.5 8.5 12 8.5C8.5 8.5 7 7 7 7V6C7 6 8.5 7.5 12 7.5C15.5 7.5 17 6 17 6V7Z" 
+                        fill="white"
+                        fillOpacity="0.4"
+                      />
                     </svg>
                   </div>
                 )}
