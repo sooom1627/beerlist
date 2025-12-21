@@ -25,7 +25,6 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
     <CardHeader 
       className="pb-2 transition-colors duration-300"
       style={beer.color ? {
-        background: `linear-gradient(to right, ${beer.color}15 0%, transparent 100%)`,
         borderLeft: `4px solid ${beer.color}`
       } : undefined}
     >
@@ -46,15 +45,21 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
             <div className="flex items-center gap-2 mt-1.5">
                <span 
                 className={cn(
-                  "px-1.5 py-0.5 rounded text-[10px] font-medium uppercase",
-                  !beer.color && "bg-muted text-muted-foreground"
+                  "px-1.5 py-0.5 rounded text-[10px] font-medium uppercase border flex items-center gap-1",
+                  !beer.color && "bg-muted text-muted-foreground border-transparent"
                 )}
                 style={beer.color ? {
-                  backgroundColor: `${beer.color}20`,
-                  border: `1px solid ${beer.color}40`,
-                  color: 'inherit'
+                  backgroundColor: `${beer.color}15`,
+                  borderColor: `${beer.color}40`,
                 } : undefined}
                >
+                 {beer.color && (
+                   <span 
+                     className="w-1.5 h-1.5 rounded-full inline-block shadow-sm"
+                     style={{ backgroundColor: beer.color }}
+                     aria-hidden="true"
+                   />
+                 )}
                  {beer.style}
                </span>
                <span className="text-[10px] text-muted-foreground font-mono">
