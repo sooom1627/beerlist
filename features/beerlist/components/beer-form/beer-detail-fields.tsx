@@ -1,21 +1,27 @@
-import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { UseFormRegister, FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { FormField } from "../common";
 import type { BeerFormData } from "../../types/beer-form.types";
+import { BeerColorPicker } from "./beer-color-picker";
 
 interface BeerDetailFieldsProps {
   register: UseFormRegister<BeerFormData>;
   errors: FieldErrors<BeerFormData>;
+  setValue: UseFormSetValue<BeerFormData>;
+  watch: UseFormWatch<BeerFormData>;
 }
 
 /**
  * ビールの詳細情報入力フィールド
  * - スタイル
+ * - カラー
  * - 場所
  * - アルコール度数
  */
 export function BeerDetailFields({
   register,
   errors,
+  setValue,
+  watch,
 }: BeerDetailFieldsProps) {
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -36,6 +42,15 @@ export function BeerDetailFields({
           placeholder="場所を入力してください"
           error={errors.location?.message}
           {...register("location")}
+        />
+      </div>
+
+      <div className="col-span-2">
+        <BeerColorPicker 
+          register={register} 
+          errors={errors} 
+          setValue={setValue} 
+          watch={watch} 
         />
       </div>
 

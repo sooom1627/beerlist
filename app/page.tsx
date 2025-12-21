@@ -1,4 +1,3 @@
-import { AuthButton } from "@/components/auth-button";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { BeerList } from "@/features/beerlist/screen/beerList";
 import { BackgroundTexture } from "@/components/background-texture";

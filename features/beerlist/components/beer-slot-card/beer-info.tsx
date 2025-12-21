@@ -36,10 +36,22 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
             <CardDescription className="text-xs text-muted-foreground">
               {beer.brewery} / {beer.location}
             </CardDescription>
-            <p className="text-xs text-muted-foreground mt-1">
-              style: <span className="font-medium">{beer.style}</span> / alcohol:{" "}
+            <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+              <span>style:</span>
+              <span className="font-medium flex items-center gap-1">
+                 {beer.color && (
+                  <span
+                    className="w-2 h-2 rounded-full border border-black/10 inline-block"
+                    style={{ backgroundColor: beer.color }}
+                    aria-hidden="true"
+                  />
+                )}
+                {beer.style}
+              </span>
+              <span>/</span>
+              <span>alcohol:</span>
               <span className="font-medium">{beer.alcohol}%</span>
-            </p>
+            </div>
           </div>
         </div>
         <Badge

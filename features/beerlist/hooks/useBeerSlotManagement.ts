@@ -132,6 +132,7 @@ export function useBeerSlotManagement(
           brewery: data.brewery,
           name: data.name,
           style: data.style,
+          color: data.color,
           location: data.location,
           description: data.description,
           price: data.price,

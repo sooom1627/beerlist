@@ -14,6 +14,7 @@ export function getDefaultBeerFormValues(beer: Beer | null): BeerFormData {
       brewery: beer.brewery,
       name: beer.name,
       style: beer.style,
+      color: beer.color,
       location: beer.location,
       description: beer.description,
       price: {
@@ -32,6 +33,7 @@ export function getDefaultBeerFormValues(beer: Beer | null): BeerFormData {
     brewery: "",
     name: "",
     style: "",
+    color: "",
     location: "",
     description: "",
     price: {

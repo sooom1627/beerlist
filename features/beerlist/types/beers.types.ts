@@ -16,6 +16,7 @@ export const beerDBSchema = z.object({
   is_available: z.boolean(),
   isNew: z.boolean(),
   created_at: z.string(),
+  color: z.string().nullable().optional(),
 });
 
 export type BeerDB = z.infer<typeof beerDBSchema>;
@@ -27,6 +28,7 @@ export type Beer = {
   brewery: string;
   name: string;
   style: string;
+  color?: string | null;
   location: string;
   description: string;
   price: {
@@ -57,6 +59,7 @@ export function transformDraftBeerDBToDraftBeer(draftDB: DraftBeerDB): DraftBeer
     brewery: draftDB.brewery,
     name: draftDB.name,
     style: draftDB.style,
+    color: draftDB.color,
     location: draftDB.location,
     description: draftDB.description,
     price: {
@@ -79,6 +82,7 @@ export function transformBeerDBToBeer(beerDB: BeerDB): Beer {
     brewery: beerDB.brewery,
     name: beerDB.name,
     style: beerDB.style,
+    color: beerDB.color,
     location: beerDB.location,
     description: beerDB.description,
     price: {
