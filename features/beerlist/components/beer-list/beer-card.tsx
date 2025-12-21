@@ -28,20 +28,33 @@ export function BeerCard({ beer, index }: BeerCardProps) {
   return (
     <Card
       className={cn(
-        "group relative",
-        "border-none shadow-none bg-transparent",
+        "group relative overflow-hidden transition-all duration-300",
+        "border-none shadow-sm hover:shadow-md bg-white dark:bg-zinc-900/50",
         !beer.isAvailable && "opacity-40 grayscale"
       )}
+      style={beer.color ? {
+        borderLeft: `6px solid ${beer.color}`,
+        background: `linear-gradient(120deg, ${beer.color}15 0%, transparent 60%)`
+      } : undefined}
     >
       <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-start gap-4">
           {/* 画像 */}
-          <BeerImage
-            src={beer.image}
-            alt={beer.name}
-            size="medium"
-            priority={index < 4}
-          />
+          <div className="relative shrink-0">
+             <BeerImage
+               src={beer.image}
+               alt={beer.name}
+               size="medium"
+               priority={index < 4}
+             />
+             {/* 色の反射効果（オプション） */}
+             {beer.color && (
+               <div 
+                 className="absolute -bottom-2 -right-2 w-12 h-12 rounded-full blur-xl opacity-40 -z-10"
+                 style={{ backgroundColor: beer.color }}
+               />
+             )}
+          </div>
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-baseline justify-between">
@@ -59,14 +72,20 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             </CardDescription>
 
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
-              <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[10px] tracking-wider font-medium uppercase flex items-center gap-1.5">
-                {beer.color && (
-                  <span
-                    className="w-2 h-2 rounded-full border border-black/10 inline-block"
-                    style={{ backgroundColor: beer.color }}
-                    aria-hidden="true"
-                  />
+              <span 
+                className={cn(
+                  "px-2 py-0.5 rounded-md text-[10px] tracking-wider font-bold uppercase",
+                  !beer.color && "bg-zinc-100 dark:bg-zinc-800"
                 )}
+                style={beer.color ? {
+                  backgroundColor: `${beer.color}`,
+                  color: getContrastYIQ(beer.color), // コントラスト計算が必要だが、簡易的に黒か白か。一旦白文字ベースでシャドウつけるか、計算関数を入れるか。
+                  // 簡易実装として、背景色を薄くして文字色を濃くするパターンを採用
+                  background: `${beer.color}20`,
+                  color: 'inherit', // または特定の色
+                  border: `1px solid ${beer.color}40`
+                } : undefined}
+              >
                 {beer.style}
               </span>
               <span className="font-mono text-[10px]">
@@ -117,11 +136,24 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
       {/* Tap Number */}
       <span
-        className="absolute -top-2 -right-1 text-[8rem] leading-none font-black text-zinc-200/80 dark:text-zinc-800/80 -z-10 select-none pointer-events-none"
+        className="absolute -top-2 -right-1 text-[8rem] leading-none font-black text-zinc-200/10 dark:text-zinc-800/10 -z-10 select-none pointer-events-none"
         aria-hidden="true"
+        style={beer.color ? { color: beer.color, opacity: 0.1 } : undefined}
       >
         {beer.tapNumber}
       </span>
     </Card>
   );
+}
+
+// 簡易的なコントラスト判定（背景色が暗い場合は白、明るい場合は黒を返す）
+// 今回は背景を薄く使う (`${beer.color}20`) ため、基本は文字色は継承でOKだが、
+// 念のため補助関数として定義しておく（今回は使用せずスタイルで調整）
+function getContrastYIQ(hexcolor: string){
+    hexcolor = hexcolor.replace("#", "");
+    var r = parseInt(hexcolor.substr(0,2),16);
+    var g = parseInt(hexcolor.substr(2,2),16);
+    var b = parseInt(hexcolor.substr(4,2),16);
+    var yiq = ((r*299)+(g*587)+(b*114))/1000;
+    return (yiq >= 128) ? 'black' : 'white';
 }

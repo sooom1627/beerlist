@@ -6,6 +6,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BeerImage } from "../common";
 import type { Beer } from "../../types/beers.types";
+import { cn } from "@/lib/utils";
 
 interface BeerInfoProps {
   beer: Beer;
@@ -21,8 +22,14 @@ interface BeerInfoProps {
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
   return (
-    <CardHeader className="pb-2">
-      <div className="flex items-start justify-between mb-2">
+    <CardHeader 
+      className="pb-2 transition-colors duration-300"
+      style={beer.color ? {
+        background: `linear-gradient(to right, ${beer.color}15 0%, transparent 100%)`,
+        borderLeft: `4px solid ${beer.color}`
+      } : undefined}
+    >
+      <div className="flex items-start justify-between mb-2 pl-2">
         <div className="flex items-start gap-3 flex-1 min-w-0 pt-2">
           <BeerImage
             src={beer.image}
@@ -36,21 +43,23 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
             <CardDescription className="text-xs text-muted-foreground">
               {beer.brewery} / {beer.location}
             </CardDescription>
-            <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-              <span>style:</span>
-              <span className="font-medium flex items-center gap-1">
-                 {beer.color && (
-                  <span
-                    className="w-2 h-2 rounded-full border border-black/10 inline-block"
-                    style={{ backgroundColor: beer.color }}
-                    aria-hidden="true"
-                  />
+            <div className="flex items-center gap-2 mt-1.5">
+               <span 
+                className={cn(
+                  "px-1.5 py-0.5 rounded text-[10px] font-medium uppercase",
+                  !beer.color && "bg-muted text-muted-foreground"
                 )}
-                {beer.style}
-              </span>
-              <span>/</span>
-              <span>alcohol:</span>
-              <span className="font-medium">{beer.alcohol}%</span>
+                style={beer.color ? {
+                  backgroundColor: `${beer.color}20`,
+                  border: `1px solid ${beer.color}40`,
+                  color: 'inherit'
+                } : undefined}
+               >
+                 {beer.style}
+               </span>
+               <span className="text-[10px] text-muted-foreground font-mono">
+                 ABV {beer.alcohol}%
+               </span>
             </div>
           </div>
         </div>
