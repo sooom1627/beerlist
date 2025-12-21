@@ -20,6 +20,9 @@ interface BeerInfoProps {
  * - スロット番号バッジ
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
+  // 一意のIDを生成（スロットインデックスを使用）
+  const clipPathId = `clip-circle-info-${slotIndex}`;
+
   return (
     <CardHeader className="pb-2">
       <div className="flex items-start justify-between mb-2">
@@ -49,15 +52,19 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
                     fill="none"
                     className="drop-shadow-sm"
                   >
-                    <path 
-                      d="M17 7V13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13V7C7 7 8.5 8.5 12 8.5C15.5 8.5 17 7 17 7Z" 
-                      fill={beer.color} 
-                    />
-                    <path 
-                      d="M17 7C17 7 15.5 8.5 12 8.5C8.5 8.5 7 7 7 7V6C7 6 8.5 7.5 12 7.5C15.5 7.5 17 6 17 6V7Z" 
-                      fill="white"
-                      fillOpacity="0.4"
-                    />
+                    <defs>
+                      <clipPath id={clipPathId}>
+                        <circle cx="12" cy="12" r="9" />
+                      </clipPath>
+                    </defs>
+                    <g clipPath={`url(#${clipPathId})`}>
+                      <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.2" />
+                      <path 
+                        d="M2 12C2 12 5 10 12 10C19 10 22 12 22 12V22H2V12Z" 
+                        fill={beer.color} 
+                      />
+                    </g>
+                    <circle cx="12" cy="12" r="9" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
                   </svg>
                 </div>
               )}

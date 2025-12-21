@@ -61,8 +61,8 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
               <div className="flex items-center gap-2">
                 {/* 
-                  Beer Color Indicator - Abstract Liquid Form
-                  線画を排除し、色と形だけで「ビール」を表現するミニマルデザイン
+                  Beer Color Indicator - Minimal Circle Wave
+                  円の中に波打つ液体を表現した幾何学的でモダンなデザイン
                 */}
                 {beer.color && (
                   <div 
@@ -76,20 +76,22 @@ export function BeerCard({ beer, index }: BeerCardProps) {
                       fill="none"
                       className="drop-shadow-sm"
                     >
-                      {/* 
-                        抽象的なグラスシルエット（液体部分のみ）
-                        上部の波線で液体感を演出
-                      */}
-                      <path 
-                        d="M17 7V13C17 15.7614 14.7614 18 12 18C9.23858 18 7 15.7614 7 13V7C7 7 8.5 8.5 12 8.5C15.5 8.5 17 7 17 7Z" 
-                        fill={beer.color} 
-                      />
-                      {/* 泡のアクセント（半透明の白） */}
-                      <path 
-                        d="M17 7C17 7 15.5 8.5 12 8.5C8.5 8.5 7 7 7 7V6C7 6 8.5 7.5 12 7.5C15.5 7.5 17 6 17 6V7Z" 
-                        fill="white"
-                        fillOpacity="0.4"
-                      />
+                      <defs>
+                        <clipPath id={`clip-circle-${index}`}>
+                          <circle cx="12" cy="12" r="9" />
+                        </clipPath>
+                      </defs>
+                      <g clipPath={`url(#clip-circle-${index})`}>
+                        {/* 背景（薄い色） */}
+                        <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.2" />
+                        {/* 液体部分（波打つ形状） */}
+                        <path 
+                          d="M2 12C2 12 5 10 12 10C19 10 22 12 22 12V22H2V12Z" 
+                          fill={beer.color} 
+                        />
+                      </g>
+                      {/* 外枠 */}
+                      <circle cx="12" cy="12" r="9" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
                     </svg>
                   </div>
                 )}
