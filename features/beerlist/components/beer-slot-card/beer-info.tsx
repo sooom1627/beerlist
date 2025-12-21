@@ -6,7 +6,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BeerImage } from "../common";
 import type { Beer } from "../../types/beers.types";
-import { cn } from "@/lib/utils";
 
 interface BeerInfoProps {
   beer: Beer;
@@ -22,13 +21,8 @@ interface BeerInfoProps {
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
   return (
-    <CardHeader 
-      className="pb-2 transition-colors duration-300"
-      style={beer.color ? {
-        borderLeft: `4px solid ${beer.color}`
-      } : undefined}
-    >
-      <div className="flex items-start justify-between mb-2 pl-2">
+    <CardHeader className="pb-2">
+      <div className="flex items-start justify-between mb-2">
         <div className="flex items-start gap-3 flex-1 min-w-0 pt-2">
           <BeerImage
             src={beer.image}
@@ -42,29 +36,39 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
             <CardDescription className="text-xs text-muted-foreground">
               {beer.brewery} / {beer.location}
             </CardDescription>
-            <div className="flex items-center gap-2 mt-1.5">
-               <span 
-                className={cn(
-                  "px-1.5 py-0.5 rounded text-[10px] font-medium uppercase border flex items-center gap-1",
-                  !beer.color && "bg-muted text-muted-foreground border-transparent"
-                )}
-                style={beer.color ? {
-                  backgroundColor: `${beer.color}15`,
-                  borderColor: `${beer.color}40`,
-                } : undefined}
-               >
-                 {beer.color && (
-                   <span 
-                     className="w-1.5 h-1.5 rounded-full inline-block shadow-sm"
-                     style={{ backgroundColor: beer.color }}
-                     aria-hidden="true"
-                   />
-                 )}
-                 {beer.style}
-               </span>
-               <span className="text-[10px] text-muted-foreground font-mono">
-                 ABV {beer.alcohol}%
-               </span>
+            <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+              {beer.color && (
+                <div 
+                  className="flex items-center justify-center p-1 rounded-sm bg-muted/50 border border-border mr-1"
+                  title="Beer Color"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="text-muted-foreground"
+                  >
+                    <path d="M17 11h1a3 3 0 0 1 0 6h-1" />
+                    <path d="M9 12h6" />
+                    <path d="M8 21h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" />
+                    <path 
+                      d="M8 21h8a2 2 0 0 0 2-2v-9H6v9a2 2 0 0 0 2 2z" 
+                      fill={beer.color} 
+                      stroke="none"
+                    />
+                  </svg>
+                </div>
+              )}
+              <span>style:</span>
+              <span className="font-medium">{beer.style}</span>
+              <span>/</span>
+              <span>alcohol:</span>
+              <span className="font-medium">{beer.alcohol}%</span>
             </div>
           </div>
         </div>

@@ -28,25 +28,20 @@ export function BeerCard({ beer, index }: BeerCardProps) {
   return (
     <Card
       className={cn(
-        "group relative overflow-hidden",
-        "border-none shadow-sm bg-white dark:bg-zinc-900/50",
+        "group relative",
+        "border-none shadow-none bg-transparent",
         !beer.isAvailable && "opacity-40 grayscale"
       )}
-      style={beer.color ? {
-        borderLeft: `4px solid ${beer.color}`,
-      } : undefined}
     >
       <CardHeader className="pb-2 px-4 pt-4">
         <div className="flex items-start gap-4">
           {/* 画像 */}
-          <div className="relative shrink-0">
-             <BeerImage
-               src={beer.image}
-               alt={beer.name}
-               size="medium"
-               priority={index < 4}
-             />
-          </div>
+          <BeerImage
+            src={beer.image}
+            alt={beer.name}
+            size="medium"
+            priority={index < 4}
+          />
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-baseline justify-between">
@@ -64,28 +59,46 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             </CardDescription>
 
             <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
-              {/* スタイルバッジ（色付き） */}
-              <span 
-                className={cn(
-                  "px-2 py-0.5 rounded-md text-[10px] tracking-wider font-bold uppercase flex items-center gap-1.5 transition-colors border",
-                  !beer.color && "bg-zinc-100 dark:bg-zinc-800 border-transparent text-zinc-600 dark:text-zinc-400"
-                )}
-                style={beer.color ? {
-                  backgroundColor: `${beer.color}15`, // 薄い背景
-                  borderColor: `${beer.color}40`,     // 少し濃い枠線
-                  color: 'inherit'                    // 文字色は継承（ダークグレー）
-                } : undefined}
-              >
+              <div className="flex items-center gap-2">
+                {/* 
+                  Beer Glass Icon Indicator
+                  シンプルに「ビールの色」を示すアイコンを表示
+                */}
                 {beer.color && (
-                  <span 
-                    className="w-2 h-2 rounded-full shadow-sm"
-                    style={{ backgroundColor: beer.color }}
-                    aria-hidden="true"
-                  />
+                  <div 
+                    className="flex items-center justify-center p-1.5 rounded-sm bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800 shadow-sm"
+                    title="Beer Color"
+                  >
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="text-zinc-400 dark:text-zinc-500"
+                    >
+                      <path d="M17 11h1a3 3 0 0 1 0 6h-1" />
+                      <path d="M9 12h6" />
+                      <path d="M8 21h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2z" />
+                      <line x1="6" x2="6" y1="22" y2="22" />
+                      <line x1="18" x2="18" y1="22" y2="22" />
+                      {/* Fill color */}
+                      <path 
+                        d="M8 21h8a2 2 0 0 0 2-2v-9H6v9a2 2 0 0 0 2 2z" 
+                        fill={beer.color} 
+                        stroke="none"
+                        className="opacity-90"
+                      />
+                    </svg>
+                  </div>
                 )}
-                {beer.style}
-              </span>
-              
+                <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[10px] tracking-wider font-medium uppercase">
+                  {beer.style}
+                </span>
+              </div>
               <span className="font-mono text-[10px]">
                 ABV {beer.alcohol}%
               </span>
@@ -134,7 +147,7 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
       {/* Tap Number */}
       <span
-        className="absolute -top-2 -right-1 text-[8rem] leading-none font-black text-zinc-200/20 dark:text-zinc-800/20 -z-10 select-none pointer-events-none"
+        className="absolute -top-2 -right-1 text-[8rem] leading-none font-black text-zinc-200/80 dark:text-zinc-800/80 -z-10 select-none pointer-events-none"
         aria-hidden="true"
       >
         {beer.tapNumber}
