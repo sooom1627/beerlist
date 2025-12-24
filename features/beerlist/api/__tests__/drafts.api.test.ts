@@ -42,7 +42,7 @@ describe('drafts.api', () => {
   });
 
   describe('getDrafts', () => {
-    it('should fetch drafts and transform them', async () => {
+    it('should fetch drafts and transform them including color', async () => {
       const mockData = [
         {
           id: 1,
@@ -50,12 +50,27 @@ describe('drafts.api', () => {
           brewery: 'Brewery',
           name: 'Beer',
           style: 'Style',
+          color: '#FFD700',
           location: 'Location',
           description: 'Desc',
           price_glass: 500,
           price_pint: 800,
           alcohol: 5,
           created_at: '2023-01-01',
+        },
+        {
+          id: 2,
+          image: 'img2.jpg',
+          brewery: 'Brewery2',
+          name: 'Beer2',
+          style: 'Style2',
+          color: null, // color can be null
+          location: 'Location2',
+          description: 'Desc2',
+          price_glass: 600,
+          price_pint: 900,
+          alcohol: 6,
+          created_at: '2023-01-02',
         },
       ];
       mockOrder.mockResolvedValue({ data: mockData, error: null });
@@ -66,6 +81,9 @@ describe('drafts.api', () => {
       expect(mockSelect).toHaveBeenCalledWith('*');
       expect(mockOrder).toHaveBeenCalledWith('created_at', { ascending: false });
       expect(result).toEqual(mockData.map(transformDraftBeerDBToDraftBeer));
+      // Verify color is correctly transformed
+      expect(result[0].color).toBe('#FFD700');
+      expect(result[1].color).toBeNull();
     });
 
     it('should throw error on fetch failure', async () => {

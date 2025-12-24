@@ -7,13 +7,23 @@ import React from 'react';
 
 // Mock hooks
 vi.mock('../../../hooks/useDraftBeers');
-// Mock BeerForm
+// Mock BeerForm with color support
 vi.mock('../../beer-form', () => ({
   BeerForm: ({ isOpen, onClose, onSubmit }: any) => isOpen ? (
     <div role="dialog" aria-label="beer-form">
       Beer Form
       <button onClick={onClose}>Close</button>
       <button onClick={() => onSubmit({ name: 'New Beer' })}>Submit</button>
+      <button onClick={() => onSubmit({
+        name: 'Beer with Color',
+        brewery: 'Brewery',
+        style: 'IPA',
+        color: '#FFD700',
+        location: 'Japan',
+        description: 'Desc',
+        price: { glass: 500, pint: 800 },
+        alcohol: 5,
+      })}>Submit with Color</button>
     </div>
   ) : null,
 }));
@@ -87,6 +97,57 @@ describe('DraftListManager', () => {
 
     await waitFor(() => {
       expect(mockCreate).toHaveBeenCalled();
+    });
+  });
+
+  it('should include color field in create mutation', async () => {
+    vi.mocked(useDrafts).mockReturnValue({ data: [], isLoading: false } as any);
+    render(<DraftListManager />, { wrapper });
+
+    fireEvent.click(screen.getByText('新しい下書きを追加'));
+    fireEvent.click(screen.getByText('Submit with Color'));
+
+    await waitFor(() => {
+      expect(mockCreate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          color: '#FFD700',
+        })
+      );
+    });
+  });
+
+  it('should include color field in update mutation', async () => {
+    const mockDrafts = [
+      {
+        id: 1,
+        name: 'Test Draft',
+        brewery: 'Test Brewery',
+        style: 'Pilsner',
+        color: '#CD853F',
+        location: 'USA',
+        description: 'Desc',
+        price: { glass: 100, pint: 200 },
+        alcohol: 4,
+        createdAt: '2023-01-01',
+      }
+    ] as any;
+    vi.mocked(useDrafts).mockReturnValue({ data: mockDrafts, isLoading: false } as any);
+
+    render(<DraftListManager />, { wrapper });
+
+    // Click edit button on the draft card
+    fireEvent.click(screen.getByText('編集'));
+    
+    // Submit with updated color
+    fireEvent.click(screen.getByText('Submit with Color'));
+
+    await waitFor(() => {
+      expect(mockUpdate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 1,
+          color: '#FFD700',
+        })
+      );
     });
   });
 });

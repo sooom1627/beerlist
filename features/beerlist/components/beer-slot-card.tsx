@@ -16,19 +16,12 @@ interface BeerSlotCardProps {
 }
 
 /**
- * ビールスロットカードコンポーネント
+ * ビールスロットカードコンポーネント（管理画面用）
  *
  * 責務:
  * - 管理画面でのビールスロット表示
  * - 空きスロットまたはビール情報の表示
  * - ビール操作（在庫切り替え、新着切り替え、編集、入れ替え）
- *
- * 使用コンポーネント:
- * - EmptySlot: 空きスロット表示
- * - BeerInfo: ビール情報表示
- * - PriceDisplay: 価格表示
- * - BeerActions: アクションボタン群
- * - NewBadge: 新着バッジ
  */
 export function BeerSlotCard({
   beer,
@@ -41,28 +34,37 @@ export function BeerSlotCard({
 }: BeerSlotCardProps) {
   // 空きスロットの場合
   if (!beer) {
-    return <EmptySlot slotIndex={slotIndex} onEdit={onEdit} onLoadFromDraft={onLoadFromDraft} />;
+    return (
+      <EmptySlot
+        slotIndex={slotIndex}
+        onEdit={onEdit}
+        onLoadFromDraft={onLoadFromDraft}
+      />
+    );
   }
 
   // ビール情報がある場合
   return (
     <Card
-      className={`group relative transition-all duration-200 ${
-        !beer.isAvailable ? "opacity-60" : ""
+      className={`group relative transition-all duration-200 overflow-hidden ${
+        !beer.isAvailable ? "opacity-60 grayscale" : ""
       }`}
     >
+      {/* 新着バッジ */}
+      {beer.isNew && <NewBadge />}
+
       {/* ビール情報 */}
       <BeerInfo beer={beer} slotIndex={slotIndex} />
 
       {/* カードコンテンツ */}
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-3 pt-0">
         {/* 説明 */}
-        <p className="text-xs text-muted-foreground leading-snug line-clamp-2">
+        <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
           {beer.description}
         </p>
 
         {/* 価格表示 */}
-        <div className="flex items-center justify-between pt-2 border-t border-border">
+        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
           <PriceDisplay
             glassPrice={beer.price.glass}
             pintPrice={beer.price.pint}
@@ -79,9 +81,6 @@ export function BeerSlotCard({
           onReplace={onReplace}
           onLoadFromDraft={onLoadFromDraft}
         />
-
-        {/* 新着バッジ */}
-        {beer.isNew && <NewBadge />}
       </CardContent>
     </Card>
   );

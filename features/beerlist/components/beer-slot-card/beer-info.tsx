@@ -1,9 +1,4 @@
-import {
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { CardHeader, CardTitle } from "@/components/ui/card";
 import { BeerImage } from "../common";
 import type { Beer } from "../../types/beers.types";
 
@@ -13,82 +8,65 @@ interface BeerInfoProps {
 }
 
 /**
- * ビール情報表示コンポーネント
+ * ビール情報表示コンポーネント（管理画面用）
  * - 画像
  * - 名前、ブルワリー、場所
- * - スタイル、アルコール度数
- * - スロット番号バッジ
+ * - スタイル、アルコール度数、カラー
+ * - タップナンバー（右上に配置）
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
-  // 一意のIDを生成（スロットインデックスを使用）
-  const clipPathId = `clip-square-info-${slotIndex}`;
-
   return (
-    <CardHeader className="pb-2">
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-start gap-3 flex-1 min-w-0 pt-2">
-          <BeerImage
-            src={beer.image}
-            alt={beer.name}
-            size="small"
-          />
-          <div className="flex-1 min-w-0">
-            <CardTitle className="text-sm font-semibold line-clamp-1">
-              {beer.name}
-            </CardTitle>
-            <CardDescription className="text-xs text-muted-foreground">
-              {beer.brewery} / {beer.location}
-            </CardDescription>
-            <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-              {beer.color && (
-                <div 
-                  className="flex items-center justify-center w-5 h-5 mr-1 shrink-0"
-                  title="Beer Color"
-                >
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="drop-shadow-sm"
-                  >
-                    <defs>
-                      <clipPath id={clipPathId}>
-                        <rect x="3" y="3" width="18" height="18" rx="5" />
-                      </clipPath>
-                    </defs>
-                    <g clipPath={`url(#${clipPathId})`}>
-                      <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
-                      <path 
-                        d="M1 13C1 13 5 16 10 13C15 10 19 16 23 13V23H1V13Z" 
-                        fill={beer.color} 
-                      />
-                      <path 
-                        d="M4 15C4 15 6 16 8 15" 
-                        stroke="white" 
-                        strokeWidth="1" 
-                        strokeLinecap="round" 
-                        opacity="0.3" 
-                      />
-                    </g>
-                    <rect x="3" y="3" width="18" height="18" rx="5" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
-                  </svg>
-                </div>
-              )}
-              <span>style:</span>
-              <span className="font-medium">{beer.style}</span>
-              <span>/</span>
-              <span>alcohol:</span>
-              <span className="font-medium">{beer.alcohol}%</span>
-            </div>
+    <CardHeader className="pb-2 relative">
+      {/* タップナンバー - 右上にミニマル配置 */}
+      <div className="absolute top-3 right-3 text-right">
+        <span className="text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-600 uppercase">
+          Tap
+        </span>
+        <div className="text-lg font-black text-zinc-200 dark:text-zinc-800 leading-none -mt-0.5">
+          {String(slotIndex + 1).padStart(2, "0")}
+        </div>
+      </div>
+
+      <div className="flex items-start gap-3 pr-12">
+        <BeerImage src={beer.image} alt={beer.name} size="small" />
+
+        <div className="flex-1 min-w-0 space-y-1">
+          <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900 dark:text-white">
+            {beer.name}
+          </CardTitle>
+
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+            <span className="text-zinc-700 dark:text-zinc-300">
+              {beer.brewery}
+            </span>
+            <span className="mx-1 opacity-40">•</span>
+            {beer.location}
+          </p>
+
+          {/* スタイル・ABV・カラー */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
+              {beer.style}
+            </span>
+            <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+              |
+            </span>
+            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-500">
+              {beer.alcohol}%
+            </span>
+            {beer.color && (
+              <>
+                <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+                  |
+                </span>
+                <span
+                  className="inline-flex w-4 h-2.5 rounded-full ring-1 ring-black/5"
+                  style={{ backgroundColor: beer.color }}
+                />
+              </>
+            )}
           </div>
         </div>
-        <Badge
-          variant={beer.isAvailable ? "default" : "secondary"}
-          className="ml-2"
-        >
-          {slotIndex + 1}
-        </Badge>
       </div>
     </CardHeader>
   );
