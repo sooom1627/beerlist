@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   UseFormRegister,
   FieldErrors,
@@ -7,13 +7,15 @@ import {
 } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { Palette } from "lucide-react";
 import type { BeerFormData } from "../../types/beer-form.types";
 
+// 通常のビールカラー（SRMベース）
 const PRESET_COLORS = [
-  { label: "Wheat", value: "#F3E5AB" }, // Cornsilk
-  { label: "IPA", value: "#FFD700" }, // Gold
-  { label: "Ale", value: "#CD853F" }, // Peru
-  { label: "Stout", value: "#2F1B1B" }, // Dark
+  { label: "Wheat", value: "#F3E5AB" },
+  { label: "IPA", value: "#FFD700" },
+  { label: "Ale", value: "#B5651D" },
+  { label: "Stout", value: "#2F1B1B" },
 ];
 
 // SRM (Standard Reference Method) Color Approximation
@@ -77,26 +79,33 @@ export const BeerColorPicker = ({
   const selectedColor = watch("color");
   const [customSrm, setCustomSrm] = useState<number>(5);
   const [isCustomMode, setIsCustomMode] = useState(false);
+  const [isFreePickerMode, setIsFreePickerMode] = useState(false);
+  const colorInputRef = useRef<HTMLInputElement>(null);
 
-  // フォームの値が変更されたら、それがプリセットかカスタムかを判定する
+  // フォームの値が変更されたら、それがプリセット/SRM/フリーかを判定する
   useEffect(() => {
     if (!selectedColor) {
       setIsCustomMode(false);
+      setIsFreePickerMode(false);
       return;
     }
 
     const isPreset = PRESET_COLORS.some((p) => p.value === selectedColor);
-    if (!isPreset) {
-      setIsCustomMode(true);
-      // 既存のカスタム色に近いSRMを探してスライダーの位置を合わせる（簡易実装）
-      const srmEntry = Object.entries(SRM_COLORS).find(
-        ([_, color]) => color.toLowerCase() === selectedColor.toLowerCase()
-      );
-      if (srmEntry) {
-        setCustomSrm(Number(srmEntry[0]));
-      }
-    } else {
+    const srmEntry = Object.entries(SRM_COLORS).find(
+      ([_, color]) => color.toLowerCase() === selectedColor.toLowerCase()
+    );
+
+    if (isPreset) {
       setIsCustomMode(false);
+      setIsFreePickerMode(false);
+    } else if (srmEntry) {
+      setIsCustomMode(true);
+      setIsFreePickerMode(false);
+      setCustomSrm(Number(srmEntry[0]));
+    } else {
+      // プリセットにもSRMにもない場合はフリーピッカーモード
+      setIsCustomMode(false);
+      setIsFreePickerMode(true);
     }
   }, [selectedColor]);
 
@@ -109,6 +118,7 @@ export const BeerColorPicker = ({
       shouldValidate: true,
     });
     setIsCustomMode(false);
+    setIsFreePickerMode(false);
   };
 
   const handleCustomChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,43 +131,95 @@ export const BeerColorPicker = ({
       shouldValidate: true,
     });
     setIsCustomMode(true);
+    setIsFreePickerMode(false);
+  };
+
+  const handleFreePickerClick = () => {
+    colorInputRef.current?.click();
+  };
+
+  const handleFreeColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const color = e.target.value;
+    setValue("color", color, {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
+    setIsCustomMode(false);
+    setIsFreePickerMode(true);
   };
 
   return (
     <div className="space-y-3">
       <Label>Beer Color</Label>
 
-      {/* Presets */}
-      <div className="flex flex-wrap gap-4 items-center mb-2">
+      {/* プリセット＋フリーピッカー */}
+      <div className="flex flex-wrap gap-3 items-center">
         {PRESET_COLORS.map((preset) => (
           <button
             key={preset.value}
             type="button"
             onClick={() => handlePresetClick(preset.value)}
             className={cn(
-              "w-10 h-10 rounded-full border-2 transition-all relative flex items-center justify-center",
-              selectedColor === preset.value && !isCustomMode
+              "w-9 h-9 rounded-full border-2 transition-all relative flex items-center justify-center",
+              selectedColor === preset.value &&
+                !isCustomMode &&
+                !isFreePickerMode
                 ? "border-primary ring-2 ring-primary ring-offset-2 scale-110"
                 : "border-gray-200 hover:border-gray-400 hover:scale-105"
             )}
             style={{ backgroundColor: preset.value }}
             title={preset.label}
           >
-            {selectedColor === preset.value && !isCustomMode && (
-              <span className="text-primary-foreground font-bold drop-shadow-md">
-                ✓
-              </span>
-            )}
+            {selectedColor === preset.value &&
+              !isCustomMode &&
+              !isFreePickerMode && (
+                <span className="text-primary-foreground font-bold drop-shadow-md text-sm">
+                  ✓
+                </span>
+              )}
             <span className="sr-only">{preset.label}</span>
           </button>
         ))}
+
+        {/* フリーカラーピッカー */}
+        <button
+          type="button"
+          onClick={handleFreePickerClick}
+          className={cn(
+            "w-9 h-9 rounded-full border-2 transition-all relative flex items-center justify-center",
+            "bg-white dark:bg-zinc-800",
+            isFreePickerMode
+              ? "border-primary ring-2 ring-primary ring-offset-2 scale-110"
+              : "border-dashed border-gray-300 hover:border-gray-400 hover:scale-105"
+          )}
+          title="自由選択"
+        >
+          {isFreePickerMode ? (
+            <div
+              className="w-6 h-6 rounded-full border border-gray-200 shadow-sm"
+              style={{ backgroundColor: selectedColor || "#888" }}
+            />
+          ) : (
+            <Palette className="w-4 h-4 text-gray-400" />
+          )}
+          <span className="sr-only">自由選択</span>
+        </button>
+        <input
+          ref={colorInputRef}
+          type="color"
+          value={selectedColor || "#FFD700"}
+          onChange={handleFreeColorChange}
+          className="sr-only"
+          aria-label="カスタムカラー選択"
+        />
       </div>
 
-      {/* Custom Slider */}
+      {/* SRMスライダー（微調整用） */}
       <div className="space-y-2 p-3 border rounded-lg bg-slate-50 dark:bg-slate-900/50">
         <div className="flex items-center justify-between">
           <Label htmlFor="srm-slider" className="text-xs text-muted-foreground">
-            Custom (SRM Scale)
+            SRMスケール（微調整）
           </Label>
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-muted-foreground">
@@ -166,7 +228,9 @@ export const BeerColorPicker = ({
             <div
               className={cn(
                 "w-6 h-6 rounded-full border shadow-sm transition-all",
-                isCustomMode && "ring-2 ring-primary ring-offset-1"
+                isCustomMode &&
+                  !isFreePickerMode &&
+                  "ring-2 ring-primary ring-offset-1"
               )}
               style={{ backgroundColor: SRM_COLORS[customSrm] }}
             />
@@ -197,9 +261,6 @@ export const BeerColorPicker = ({
             aria-label="Beer Color Slider"
           />
         </div>
-        <p className="text-[10px] text-muted-foreground text-center">
-          Slide to select a custom beer color
-        </p>
       </div>
 
       <input type="hidden" {...register("color")} />

@@ -25,12 +25,20 @@ const TestComponent = () => {
 };
 
 describe("BeerColorPicker", () => {
-  it("should render presets and srm slider", () => {
+  it("should render presets, free picker, and srm slider", () => {
     render(<TestComponent />);
     
+    // 通常カラープリセット
     expect(screen.getByTitle("Wheat")).toBeInTheDocument();
     expect(screen.getByTitle("IPA")).toBeInTheDocument();
-    expect(screen.getByLabelText("Custom (SRM Scale)")).toBeInTheDocument();
+    expect(screen.getByTitle("Ale")).toBeInTheDocument();
+    expect(screen.getByTitle("Stout")).toBeInTheDocument();
+    
+    // フリーピッカーボタン
+    expect(screen.getByTitle("自由選択")).toBeInTheDocument();
+    
+    // SRMスライダー
+    expect(screen.getByLabelText("SRMスケール（微調整）")).toBeInTheDocument();
     expect(screen.getByLabelText("Beer Color Slider")).toBeInTheDocument();
   });
 
@@ -54,6 +62,24 @@ describe("BeerColorPicker", () => {
     await waitFor(() => {
         // SRM 40 is #1F0506 in our map
         expect(screen.getByTestId("selected-color")).toHaveTextContent("#1F0506");
+    });
+  });
+
+  it("should toggle off when clicking selected preset again", async () => {
+    render(<TestComponent />);
+    
+    const ipaButton = screen.getByTitle("IPA");
+    
+    // Select
+    fireEvent.click(ipaButton);
+    await waitFor(() => {
+        expect(screen.getByTestId("selected-color")).toHaveTextContent("#FFD700");
+    });
+    
+    // Deselect
+    fireEvent.click(ipaButton);
+    await waitFor(() => {
+        expect(screen.getByTestId("selected-color")).toHaveTextContent("none");
     });
   });
 });

@@ -109,6 +109,9 @@ export function BeerCard({ beer, index }: BeerCardProps) {
               {beer.color && (
                 <>
                   <span className="text-[10px] sm:text-[11px] text-zinc-300 dark:text-zinc-700">|</span>
+                  <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500 dark:text-zinc-500">
+                    color:
+                  </span>
                   <span
                     className="inline-flex w-5 h-3 sm:w-6 sm:h-3.5 rounded-full ring-1 ring-black/5"
                     style={{ backgroundColor: beer.color }}
