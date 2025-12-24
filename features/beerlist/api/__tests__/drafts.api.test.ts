@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getDrafts, createDraft, updateDraft, deleteDraft, applyDraftToSlot } from '../drafts.api';
-import { createClient } from '@/lib/supabase/client';
 import { transformDraftBeerDBToDraftBeer } from '../../types/beers.types';
 
 // Mock Supabase client

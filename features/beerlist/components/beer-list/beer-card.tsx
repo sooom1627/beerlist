@@ -33,15 +33,17 @@ export function BeerCard({ beer, index }: BeerCardProps) {
         !beer.isAvailable && "opacity-40 grayscale"
       )}
     >
-      <CardHeader className="pb-2 px-4 pt-4">
-        <div className="flex items-start gap-4">
-          {/* 画像 */}
-          <BeerImage
-            src={beer.image}
-            alt={beer.name}
-            size="medium"
-            priority={index < 4}
-          />
+      <CardHeader className="pb-2 px-2 pt-4">
+        <div className="flex items-center gap-4">
+          {/* 画像エリア - 装飾なし */}
+          <div className="relative shrink-0">
+            <BeerImage
+              src={beer.image}
+              alt={beer.name}
+              size="medium"
+              priority={index < 4}
+            />
+          </div>
 
           <div className="flex-1 min-w-0 space-y-1">
             <div className="flex items-baseline justify-between">
@@ -52,77 +54,57 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
             <CardDescription className="text-xs tracking-wide uppercase text-zinc-500 dark:text-zinc-400 font-medium">
               {beer.brewery}{" "}
-              <span className="text-zinc-300 dark:text-zinc-700 mx-1">
-                /
-              </span>{" "}
+              <span className="text-zinc-300 dark:text-zinc-700 mx-1">/</span>{" "}
               {beer.location}
             </CardDescription>
-
-            <div className="flex items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 pt-1">
-              <div className="flex items-center gap-2">
-                {/* 
-                  Beer Color Indicator - Modern Liquid Cube
-                  角丸四角形の中に波打つ液体を表現したデザイン
-                */}
-                {beer.color && (
-                  <div 
-                    className="flex items-center justify-center w-6 h-6 shrink-0"
-                    title="Beer Color"
-                  >
-                    <svg
-                      width="100%"
-                      height="100%"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="drop-shadow-sm"
-                    >
-                      <defs>
-                        <clipPath id={`clip-square-${index}`}>
-                          <rect x="3" y="3" width="18" height="18" rx="5" />
-                        </clipPath>
-                      </defs>
-                      <g clipPath={`url(#clip-square-${index})`}>
-                        {/* 背景（薄い色） */}
-                        <rect x="2" y="2" width="20" height="20" fill={beer.color} opacity="0.15" />
-                        {/* 液体部分（強調された波） */}
-                        <path 
-                          d="M1 13C1 13 5 16 10 13C15 10 19 16 23 13V23H1V13Z" 
-                          fill={beer.color} 
-                        />
-                        {/* ハイライト（液体の艶） */}
-                        <path 
-                          d="M4 15C4 15 6 16 8 15" 
-                          stroke="white" 
-                          strokeWidth="1" 
-                          strokeLinecap="round" 
-                          opacity="0.3" 
-                        />
-                      </g>
-                      {/* 外枠 */}
-                      <rect x="3" y="3" width="18" height="18" rx="5" stroke={beer.color} strokeWidth="1.5" opacity="0.5" />
-                    </svg>
-                  </div>
-                )}
-                <span className="px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 rounded text-[10px] tracking-wider font-medium uppercase">
-                  {beer.style}
-                </span>
-              </div>
-              <span className="font-mono text-[10px]">
-                ABV {beer.alcohol}%
-              </span>
-            </div>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="px-4 pb-4 pt-2 space-y-4">
+      <CardContent className="px-3 pb-4 pt-1 space-y-2">
+        <div className="flex items-start gap-5">
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
+              Style
+            </span>
+            <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 leading-tight">
+              {beer.style}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
+              Alc
+            </span>
+            <span className="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200 leading-tight">
+              {beer.alcohol}%
+            </span>
+          </div>
+
+          {beer.color && (
+            <div className="flex flex-col gap-0.5">
+              <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
+                Color
+              </span>
+              <div className="h-4 flex items-center">
+                <div className="w-8 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                  <div
+                    className="h-full w-full"
+                    style={{ backgroundColor: beer.color }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* 説明 */}
         <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
           {beer.description}
         </p>
 
         {/* 価格 */}
-        <div className="flex items-end justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800/50 border-dashed">
+        <div className="flex items-end justify-between border-t border-zinc-100 dark:border-zinc-800/50 border-dashed">
           <PriceDisplay
             glassPrice={beer.price.glass}
             pintPrice={beer.price.pint}
