@@ -35,7 +35,7 @@ export function BeerImage({
   const config = sizeConfig[size];
 
   return (
-    <div className={`${config.container} bg-white dark:bg-zinc-900 rounded-sm shadow-sm flex items-center justify-center p-1`}>
+    <div className={`${config.container} bg-white rounded-sm shadow-sm flex items-center justify-center p-1`}>
       {src ? (
         <div className="relative w-full h-full">
           <Image
@@ -43,12 +43,12 @@ export function BeerImage({
             alt={alt}
             fill
             sizes={config.imageSize}
-            className="object-contain mix-blend-multiply bg-white dark:mix-blend-normal rounded-sm p-0.5"
+            className="object-contain mix-blend-multiply bg-white rounded-sm p-0.5"
             priority={priority}
           />
         </div>
       ) : (
-        <div className="w-full h-full bg-zinc-100 dark:bg-zinc-800 rounded-sm" />
+        <div className="w-full h-full bg-zinc-100 rounded-sm" />
       )}
     </div>
   );

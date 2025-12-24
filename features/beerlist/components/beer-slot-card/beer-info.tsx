@@ -19,10 +19,10 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
     <CardHeader className="pb-2 relative">
       {/* タップナンバー - 右上にミニマル配置 */}
       <div className="absolute top-3 right-3 text-right">
-        <span className="text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-600 uppercase">
+        <span className="text-[9px] font-mono tracking-widest text-zinc-400 uppercase">
           Tap
         </span>
-        <div className="text-lg font-black text-zinc-200 dark:text-zinc-800 leading-none -mt-0.5">
+        <div className="text-lg font-black text-zinc-200 leading-none -mt-0.5">
           {String(slotIndex + 1).padStart(2, "0")}
         </div>
       </div>
@@ -31,12 +31,12 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
         <BeerImage src={beer.image} alt={beer.name} size="small" />
 
         <div className="flex-1 min-w-0 space-y-1">
-          <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900 dark:text-white">
+          <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900">
             {beer.name}
           </CardTitle>
 
-          <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-            <span className="text-zinc-700 dark:text-zinc-300">
+          <p className="text-[11px] text-zinc-500 font-medium">
+            <span className="text-zinc-700">
               {beer.brewery}
             </span>
             <span className="mx-1 opacity-40">•</span>
@@ -45,18 +45,18 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
 
           {/* スタイル・ABV・カラー */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
+            <span className="text-[10px] font-semibold text-zinc-600">
               {beer.style}
             </span>
-            <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+            <span className="text-[10px] text-zinc-300">
               |
             </span>
-            <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-500">
+            <span className="text-[10px] font-mono text-zinc-500">
               {beer.alcohol}%
             </span>
             {beer.color && (
               <>
-                <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+                <span className="text-[10px] text-zinc-300">
                   |
                 </span>
                 <span

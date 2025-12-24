@@ -8,7 +8,7 @@ export function BeerListSkeleton() {
       {[...Array(4)].map((_, i) => (
         <div
           key={i}
-          className="h-32 bg-zinc-100 dark:bg-zinc-900/50 animate-pulse rounded-sm"
+          className="h-32 bg-zinc-100 animate-pulse rounded-sm"
         />
       ))}
     </div>

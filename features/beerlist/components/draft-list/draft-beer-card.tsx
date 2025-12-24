@@ -39,10 +39,10 @@ export function DraftBeerCard({
     <Card className="group relative transition-all duration-200 h-full flex flex-col overflow-hidden">
       {/* 下書きバッジ - 右上に配置 */}
       <div className="absolute top-3 right-3 text-right z-10">
-        <span className="text-[9px] font-mono tracking-widest text-zinc-400 dark:text-zinc-600 uppercase">
+        <span className="text-[9px] font-mono tracking-widest text-zinc-400 uppercase">
           Draft
         </span>
-        <div className="text-xs font-semibold text-zinc-300 dark:text-zinc-700 leading-none">
+        <div className="text-xs font-semibold text-zinc-300 leading-none">
           下書き
         </div>
       </div>
@@ -53,12 +53,12 @@ export function DraftBeerCard({
           <BeerImage src={draft.image} alt={draft.name} size="small" />
 
           <div className="flex-1 min-w-0 space-y-1">
-            <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900 dark:text-white">
+            <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900">
               {draft.name}
             </CardTitle>
 
-            <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
-              <span className="text-zinc-700 dark:text-zinc-300">
+            <p className="text-[11px] text-zinc-500 font-medium">
+              <span className="text-zinc-700">
                 {draft.brewery}
               </span>
               <span className="mx-1 opacity-40">•</span>
@@ -67,18 +67,18 @@ export function DraftBeerCard({
 
             {/* スタイル・ABV・カラー */}
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] font-semibold text-zinc-600 dark:text-zinc-400">
+              <span className="text-[10px] font-semibold text-zinc-600">
                 {draft.style}
               </span>
-              <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+              <span className="text-[10px] text-zinc-300">
                 |
               </span>
-              <span className="text-[10px] font-mono text-zinc-500 dark:text-zinc-500">
+              <span className="text-[10px] font-mono text-zinc-500">
                 {draft.alcohol}%
               </span>
               {draft.color && (
                 <>
-                  <span className="text-[10px] text-zinc-300 dark:text-zinc-700">
+                  <span className="text-[10px] text-zinc-300">
                     |
                   </span>
                   <span
@@ -94,11 +94,11 @@ export function DraftBeerCard({
 
       {/* Content Section */}
       <CardContent className="space-y-3 flex-1 flex flex-col pt-0">
-        <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
+        <p className="text-[13px] text-zinc-600 leading-relaxed line-clamp-2">
           {draft.description}
         </p>
 
-        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+        <div className="pt-3 border-t border-zinc-100">
           <PriceDisplay
             glassPrice={draft.price.glass}
             pintPrice={draft.price.pint}

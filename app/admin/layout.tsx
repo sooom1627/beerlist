@@ -1,5 +1,4 @@
 import { AuthButton } from "@/components/auth-button";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -71,7 +70,6 @@ export default function AdminLayout({
             リリースノート
           </Link>
           <span className="text-muted-foreground">v1.4.3</span>
-          <ThemeSwitcher />
         </footer>
       </div>
     </main>

@@ -9,10 +9,6 @@ vi.mock("@/components/auth-button", () => ({
   AuthButton: () => <div data-testid="auth-button">AuthButton</div>,
 }));
 
-vi.mock("@/components/theme-switcher", () => ({
-  ThemeSwitcher: () => <div data-testid="theme-switcher">ThemeSwitcher</div>,
-}));
-
 describe("AdminLayout", () => {
   it("フッターに利用規約へのリンクが存在すること", () => {
     render(

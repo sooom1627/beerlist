@@ -2,7 +2,7 @@ export function BackgroundTexture() {
   return (
     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden select-none">
       {/* ノイズテクスチャ: SVGフィルターを使用して確実に描画 */}
-      <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.05]">
+      <svg className="absolute inset-0 w-full h-full opacity-[0.03]">
         <filter id="noise">
           <feTurbulence
             type="fractalNoise"
@@ -15,7 +15,7 @@ export function BackgroundTexture() {
       </svg>
 
       {/* トップライト効果: SVGグラデーションを使用 */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] opacity-60 dark:opacity-40">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] opacity-60">
         <svg
           viewBox="0 0 1000 500"
           fill="none"
@@ -39,8 +39,8 @@ export function BackgroundTexture() {
               gradientUnits="userSpaceOnUse"
               gradientTransform="translate(500 0) rotate(90) scale(400 400)"
             >
-              <stop stopColor="currentColor" className="text-zinc-200 dark:text-zinc-800" />
-              <stop offset="1" stopColor="currentColor" stopOpacity="0" className="text-zinc-200 dark:text-zinc-800" />
+              <stop stopColor="currentColor" className="text-zinc-200" />
+              <stop offset="1" stopColor="currentColor" stopOpacity="0" className="text-zinc-200" />
             </radialGradient>
           </defs>
         </svg>

@@ -188,7 +188,7 @@ export const BeerColorPicker = ({
           onClick={handleFreePickerClick}
           className={cn(
             "w-9 h-9 rounded-full border-2 transition-all relative flex items-center justify-center",
-            "bg-white dark:bg-zinc-800",
+            "bg-white",
             isFreePickerMode
               ? "border-primary ring-2 ring-primary ring-offset-2 scale-110"
               : "border-dashed border-gray-300 hover:border-gray-400 hover:scale-105"
@@ -216,7 +216,7 @@ export const BeerColorPicker = ({
       </div>
 
       {/* SRMスライダー（微調整用） */}
-      <div className="space-y-2 p-3 border rounded-lg bg-slate-50 dark:bg-slate-900/50">
+      <div className="space-y-2 p-3 border rounded-lg bg-slate-50">
         <div className="flex items-center justify-between">
           <Label htmlFor="srm-slider" className="text-xs text-muted-foreground">
             SRMスケール（微調整）

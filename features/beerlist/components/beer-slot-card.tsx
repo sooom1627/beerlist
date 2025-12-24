@@ -59,12 +59,12 @@ export function BeerSlotCard({
       {/* カードコンテンツ */}
       <CardContent className="space-y-3 pt-0">
         {/* 説明 */}
-        <p className="text-[13px] text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-2">
+        <p className="text-[13px] text-zinc-600 leading-relaxed line-clamp-2">
           {beer.description}
         </p>
 
         {/* 価格表示 */}
-        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/50">
+        <div className="pt-3 border-t border-zinc-100">
           <PriceDisplay
             glassPrice={beer.price.glass}
             pintPrice={beer.price.pint}

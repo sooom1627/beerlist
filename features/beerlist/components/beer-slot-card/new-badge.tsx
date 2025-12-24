@@ -9,7 +9,7 @@ export function NewBadge() {
         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
         <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
       </span>
-      <span className="text-[10px] font-bold tracking-[0.2em] text-amber-600 dark:text-amber-500 uppercase">
+      <span className="text-[10px] font-bold tracking-[0.2em] text-amber-600 uppercase">
         New Tap!
       </span>
     </div>

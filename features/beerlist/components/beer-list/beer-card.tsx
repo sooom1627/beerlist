@@ -50,10 +50,10 @@ export function BeerCard({ beer, index }: BeerCardProps) {
     >
       {/* タップナンバー - 右上にモノクロでさりげなく */}
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 text-right">
-        <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 dark:text-zinc-600 uppercase">
+        <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
           Tap
         </span>
-        <div className="text-xl sm:text-2xl font-black text-zinc-200 dark:text-zinc-800 leading-none -mt-0.5">
+        <div className="text-xl sm:text-2xl font-black text-zinc-200 leading-none -mt-0.5">
           {String(beer.tapNumber).padStart(2, "0")}
         </div>
       </div>
@@ -65,7 +65,7 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
           </span>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] text-amber-600 dark:text-amber-500 uppercase">
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] text-amber-600 uppercase">
             New Tap!
           </span>
         </div>
@@ -86,11 +86,11 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
           {/* 基本情報 */}
           <div className="flex-1 min-w-0 space-y-1 sm:space-y-1.5 pt-0.5">
-            <h3 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-white leading-tight line-clamp-2 pr-12">
+            <h3 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 leading-tight line-clamp-2 pr-12">
               {beer.name}
             </h3>
-            <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-              <span className="text-zinc-700 dark:text-zinc-300">
+            <p className="text-[11px] sm:text-xs text-zinc-500 font-medium">
+              <span className="text-zinc-700">
                 {beer.brewery}
               </span>
               <span className="mx-1 sm:mx-1.5 opacity-40">•</span>
@@ -99,17 +99,17 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
             {/* スタイル・ABV・カラー */}
             <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <span className="text-[10px] sm:text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
+              <span className="text-[10px] sm:text-[11px] font-semibold text-zinc-600">
                 {beer.style}
               </span>
-              <span className="text-[10px] sm:text-[11px] text-zinc-300 dark:text-zinc-700">|</span>
-              <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500 dark:text-zinc-500">
+              <span className="text-[10px] sm:text-[11px] text-zinc-300">|</span>
+              <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500">
                 {beer.alcohol}%
               </span>
               {beer.color && (
                 <>
-                  <span className="text-[10px] sm:text-[11px] text-zinc-300 dark:text-zinc-700">|</span>
-                  <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500 dark:text-zinc-500">
+                  <span className="text-[10px] sm:text-[11px] text-zinc-300">|</span>
+                  <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500">
                     color:
                   </span>
                   <span
@@ -123,12 +123,12 @@ export function BeerCard({ beer, index }: BeerCardProps) {
         </div>
 
         {/* 説明 */}
-        <p className="text-[13px] sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+        <p className="text-[13px] sm:text-sm text-zinc-600 leading-relaxed">
           {beer.description}
         </p>
 
         {/* 価格 */}
-        <div className="pt-3 sm:pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
+        <div className="pt-3 sm:pt-4 border-t border-zinc-100">
           <PriceDisplay
             glassPrice={beer.price.glass}
             pintPrice={beer.price.pint}
@@ -139,8 +139,8 @@ export function BeerCard({ beer, index }: BeerCardProps) {
 
       {/* 在庫切れオーバーレイ */}
       {!beer.isAvailable && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-black/60">
-          <span className="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-bold tracking-widest uppercase text-zinc-500 border border-zinc-400 dark:border-zinc-600">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60">
+          <span className="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-bold tracking-widest uppercase text-zinc-500 border border-zinc-400">
             Sold Out
           </span>
         </div>

@@ -9,10 +9,6 @@ vi.mock("@/components/auth-button", () => ({
   AuthButton: () => <div data-testid="auth-button">AuthButton</div>,
 }));
 
-vi.mock("@/components/theme-switcher", () => ({
-  ThemeSwitcher: () => <div data-testid="theme-switcher">ThemeSwitcher</div>,
-}));
-
 // ResizeObserverのモック
 global.ResizeObserver = class ResizeObserver {
   observe() {}
