@@ -1,11 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { BeerImage, PriceDisplay } from "../common";
 import type { Beer } from "../../types/beers.types";
 
@@ -16,26 +12,69 @@ interface BeerCardProps {
 
 /**
  * ビールカードコンポーネント（顧客向け表示）
- * - ビール画像
- * - 基本情報（名前、ブルワリー、場所）
- * - スタイルとアルコール度数
- * - 説明
- * - 価格
- * - 在庫切れ表示
- * - 新着バッジ
+ *
+ * 特徴:
+ * - シンプル＆モダンなフラットデザイン
+ * - タップNo.は右上にミニマル配置
+ * - スマホスクロール最適化
+ * - スクロール時の浮かび上がりアニメーション
  */
 export function BeerCard({ beer, index }: BeerCardProps) {
+  const { ref, isVisible } = useScrollReveal<HTMLElement>({
+    threshold: 0.15,
+    rootMargin: "0px 0px -30px 0px",
+  });
+
   return (
-    <Card
+    <article
+      ref={ref}
       className={cn(
         "group relative",
-        "border-none shadow-none bg-transparent",
-        !beer.isAvailable && "opacity-40 grayscale"
+        "rounded-xl overflow-hidden",
+        // GPUアクセラレーション・スクロール最適化
+        "transform-gpu will-change-transform",
+        // スクロール時の浮かび上がりアニメーション
+        "transition-all duration-500 ease-out",
+        isVisible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-3",
+        // ホバーエフェクト（デスクトップのみ）
+        isVisible && "md:hover:-translate-y-0.5",
+        // スマホ用タッチフィードバック
+        "active:scale-[0.995]",
+        !beer.isAvailable && "opacity-50 grayscale"
       )}
+      style={{
+        transitionDelay: isVisible ? "0ms" : `${index * 60}ms`,
+      }}
     >
-      <CardHeader className="pb-2 px-2 pt-4">
-        <div className="flex items-center gap-4">
-          {/* 画像エリア - 装飾なし */}
+      {/* タップナンバー - 右上にモノクロでさりげなく */}
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 text-right">
+        <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 dark:text-zinc-600 uppercase">
+          Tap
+        </span>
+        <div className="text-xl sm:text-2xl font-black text-zinc-200 dark:text-zinc-800 leading-none -mt-0.5">
+          {String(beer.tapNumber).padStart(2, "0")}
+        </div>
+      </div>
+
+      {/* 新着バッジ */}
+      {beer.isNew && (
+        <div className="absolute top-0 left-3 sm:top-0 sm:left-4 z-10 flex items-center gap-1.5">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+          </span>
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] text-amber-600 dark:text-amber-500 uppercase">
+            New Tap!
+          </span>
+        </div>
+      )}
+
+      <div className="relative p-4 sm:p-5 space-y-3 sm:space-y-4">
+        {/* ヘッダー: 画像 + 基本情報 */}
+        <div className="flex items-start gap-3 sm:gap-4">
+          {/* 画像エリア */}
           <div className="relative shrink-0">
             <BeerImage
               src={beer.image}
@@ -45,103 +84,64 @@ export function BeerCard({ beer, index }: BeerCardProps) {
             />
           </div>
 
-          <div className="flex-1 min-w-0 space-y-1">
-            <div className="flex items-baseline justify-between">
-              <CardTitle className="text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50 line-clamp-1">
-                {beer.name}
-              </CardTitle>
-            </div>
-
-            <CardDescription className="text-xs tracking-wide uppercase text-zinc-500 dark:text-zinc-400 font-medium">
-              {beer.brewery}{" "}
-              <span className="text-zinc-300 dark:text-zinc-700 mx-1">/</span>{" "}
-              {beer.location}
-            </CardDescription>
-          </div>
-        </div>
-      </CardHeader>
-
-      <CardContent className="px-3 pb-4 pt-1 space-y-2">
-        <div className="flex items-start gap-5">
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
-              Style
-            </span>
-            <span className="text-xs font-bold text-zinc-800 dark:text-zinc-200 leading-tight">
-              {beer.style}
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-0.5">
-            <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
-              Alc
-            </span>
-            <span className="text-xs font-mono font-medium text-zinc-800 dark:text-zinc-200 leading-tight">
-              {beer.alcohol}%
-            </span>
-          </div>
-
-          {beer.color && (
-            <div className="flex flex-col gap-0.5">
-              <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-wider leading-none">
-                Color
+          {/* 基本情報 */}
+          <div className="flex-1 min-w-0 space-y-1 sm:space-y-1.5 pt-0.5">
+            <h3 className="text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-white leading-tight line-clamp-2 pr-12">
+              {beer.name}
+            </h3>
+            <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 font-medium">
+              <span className="text-zinc-700 dark:text-zinc-300">
+                {beer.brewery}
               </span>
-              <div className="h-4 flex items-center">
-                <div className="w-8 h-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                  <div
-                    className="h-full w-full"
+              <span className="mx-1 sm:mx-1.5 opacity-40">•</span>
+              {beer.location}
+            </p>
+
+            {/* スタイル・ABV・カラー */}
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <span className="text-[10px] sm:text-[11px] font-semibold text-zinc-600 dark:text-zinc-400">
+                {beer.style}
+              </span>
+              <span className="text-[10px] sm:text-[11px] text-zinc-300 dark:text-zinc-700">|</span>
+              <span className="text-[10px] sm:text-[11px] font-mono text-zinc-500 dark:text-zinc-500">
+                {beer.alcohol}%
+              </span>
+              {beer.color && (
+                <>
+                  <span className="text-[10px] sm:text-[11px] text-zinc-300 dark:text-zinc-700">|</span>
+                  <span
+                    className="inline-flex w-5 h-3 sm:w-6 sm:h-3.5 rounded-full ring-1 ring-black/5"
                     style={{ backgroundColor: beer.color }}
                   />
-                </div>
-              </div>
+                </>
+              )}
             </div>
-          )}
+          </div>
         </div>
 
         {/* 説明 */}
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
+        <p className="text-[13px] sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
           {beer.description}
         </p>
 
         {/* 価格 */}
-        <div className="flex items-end justify-between border-t border-zinc-100 dark:border-zinc-800/50 border-dashed">
+        <div className="pt-3 sm:pt-4 border-t border-zinc-100 dark:border-zinc-800/50">
           <PriceDisplay
             glassPrice={beer.price.glass}
             pintPrice={beer.price.pint}
             variant="detailed"
           />
-
-          {/* 在庫切れ表示 */}
-          {!beer.isAvailable && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-              <span className="text-xl font-bold text-zinc-500 border-4 border-zinc-500 px-6 py-3 rounded-md -rotate-12 opacity-90 uppercase tracking-widest shadow-sm bg-white/50 dark:bg-black/50 backdrop-blur-sm">
-                Sold Out
-              </span>
-            </div>
-          )}
-
-          {/* 新着バッジ */}
-          {beer.isNew && (
-            <div className="absolute -top-2 left-4 z-10 flex items-center gap-1.5 mb-1.5 animate-in fade-in slide-in-from-left-2 duration-500">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-              </span>
-              <span className="text-[12px] font-bold tracking-[0.2em] text-amber-600 dark:text-amber-500 uppercase">
-                New Tap!
-              </span>
-            </div>
-          )}
         </div>
-      </CardContent>
+      </div>
 
-      {/* Tap Number */}
-      <span
-        className="absolute -top-2 -right-1 text-[8rem] leading-none font-black text-zinc-200/80 dark:text-zinc-800/80 -z-10 select-none pointer-events-none"
-        aria-hidden="true"
-      >
-        {beer.tapNumber}
-      </span>
-    </Card>
+      {/* 在庫切れオーバーレイ */}
+      {!beer.isAvailable && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-black/60">
+          <span className="px-4 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-bold tracking-widest uppercase text-zinc-500 border border-zinc-400 dark:border-zinc-600">
+            Sold Out
+          </span>
+        </div>
+      )}
+    </article>
   );
 }
