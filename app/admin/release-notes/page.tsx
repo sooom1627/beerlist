@@ -21,7 +21,7 @@ const releaseHistory: ReleaseItem[] = [
     changes: [
       {
         type: "feature",
-        description: "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面ではビールグラスアイコンで色を表示します。",
+        description: "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面では色を表示します。",
       },
       {
         type: "enhancement",
