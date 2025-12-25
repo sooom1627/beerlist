@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { getDrafts, createDraft, updateDraft, deleteDraft, applyDraftToSlot } from '../drafts.api';
-import { createClient } from '@/lib/supabase/client';
 import { transformDraftBeerDBToDraftBeer } from '../../types/beers.types';
 
 // Mock Supabase client
@@ -43,7 +42,7 @@ describe('drafts.api', () => {
   });
 
   describe('getDrafts', () => {
-    it('should fetch drafts and transform them', async () => {
+    it('should fetch drafts and transform them including color', async () => {
       const mockData = [
         {
           id: 1,
@@ -51,12 +50,27 @@ describe('drafts.api', () => {
           brewery: 'Brewery',
           name: 'Beer',
           style: 'Style',
+          color: '#FFD700',
           location: 'Location',
           description: 'Desc',
           price_glass: 500,
           price_pint: 800,
           alcohol: 5,
           created_at: '2023-01-01',
+        },
+        {
+          id: 2,
+          image: 'img2.jpg',
+          brewery: 'Brewery2',
+          name: 'Beer2',
+          style: 'Style2',
+          color: null, // color can be null
+          location: 'Location2',
+          description: 'Desc2',
+          price_glass: 600,
+          price_pint: 900,
+          alcohol: 6,
+          created_at: '2023-01-02',
         },
       ];
       mockOrder.mockResolvedValue({ data: mockData, error: null });
@@ -67,6 +81,9 @@ describe('drafts.api', () => {
       expect(mockSelect).toHaveBeenCalledWith('*');
       expect(mockOrder).toHaveBeenCalledWith('created_at', { ascending: false });
       expect(result).toEqual(mockData.map(transformDraftBeerDBToDraftBeer));
+      // Verify color is correctly transformed
+      expect(result[0].color).toBe('#FFD700');
+      expect(result[1].color).toBeNull();
     });
 
     it('should throw error on fetch failure', async () => {
@@ -84,6 +101,7 @@ describe('drafts.api', () => {
         brewery: 'Brewery',
         name: 'Beer',
         style: 'Style',
+        color: '#FFD700',
         location: 'Location',
         description: 'Desc',
         price: { glass: 500, pint: 800 },
@@ -100,6 +118,7 @@ describe('drafts.api', () => {
       expect(mockFrom).toHaveBeenCalledWith('beer_drafts');
       expect(mockInsert).toHaveBeenCalledWith(expect.objectContaining({
         name: 'Beer',
+        color: '#FFD700',
         price_glass: 500,
       }));
       expect(result).toEqual(transformDraftBeerDBToDraftBeer(mockResponse));
@@ -114,6 +133,7 @@ describe('drafts.api', () => {
         brewery: 'Brewery',
         name: 'Beer Updated',
         style: 'Style',
+        color: '#CD853F',
         location: 'Location',
         description: 'Desc',
         price: { glass: 600, pint: 900 },
@@ -131,6 +151,7 @@ describe('drafts.api', () => {
       expect(mockFrom).toHaveBeenCalledWith('beer_drafts');
       expect(mockUpdate).toHaveBeenCalledWith(expect.objectContaining({
         name: 'Beer Updated',
+        color: '#CD853F',
       }));
       expect(mockEq).toHaveBeenCalledWith('id', 1);
       expect(result).toEqual(transformDraftBeerDBToDraftBeer(mockResponse));
@@ -158,6 +179,7 @@ describe('drafts.api', () => {
           brewery: 'Brewery',
           name: 'Beer',
           style: 'Style',
+          color: '#FFD700',
           location: 'Location',
           description: 'Desc',
           price: { glass: 500, pint: 800 },
@@ -187,6 +209,7 @@ describe('drafts.api', () => {
         expect(mockUpsert).toHaveBeenCalledWith(expect.objectContaining({
             tap_number: slotNumber,
             name: draft.name,
+            color: draft.color,
             // default values for beer
             is_available: true,
             isNew: true, // Default to true or false? Let's say true for new beer on tap

@@ -25,6 +25,7 @@ export const upsertBeer = async (beer: Omit<Beer, "id" | "createdAt"> & { id?: n
     brewery: beer.brewery,
     name: beer.name,
     style: beer.style,
+    color: beer.color,
     location: beer.location,
     description: beer.description,
     price_glass: beer.price.glass,

@@ -38,7 +38,7 @@ export function PriceDisplay({
           </span>
           )
         </span>
-        <span className="font-medium text-zinc-900 dark:text-zinc-200">
+        <span className="font-medium text-zinc-900">
           ¥{glassPrice === 0 ? ' -' : glassPrice.toLocaleString()}
         </span>
       </div>
@@ -50,7 +50,7 @@ export function PriceDisplay({
           </span>
           )
         </span>
-        <span className="font-medium text-zinc-900 dark:text-zinc-200">
+        <span className="font-medium text-zinc-900">
           ¥{pintPrice === 0 ? ' -' : pintPrice.toLocaleString()}
         </span>
       </div>

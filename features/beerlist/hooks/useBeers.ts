@@ -57,6 +57,7 @@ export const useUpsertBeer = () => {
               brewery: newBeer.brewery,
               name: newBeer.name,
               style: newBeer.style,
+              color: newBeer.color,
               location: newBeer.location,
               description: newBeer.description,
               price: newBeer.price,

@@ -61,6 +61,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm<BeerFormData>({
     resolver: zodResolver(beerFormSchema),
     defaultValues: beer ? {
@@ -69,6 +70,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       brewery: beer.brewery,
       name: beer.name,
       style: beer.style,
+      color: beer.color,
       location: beer.location,
       description: beer.description,
       price: {
@@ -84,6 +86,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       brewery: "",
       name: "",
       style: "",
+      color: "",
       location: "",
       description: "",
       price: {
@@ -194,7 +197,12 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
             <BeerBasicInfoFields register={register} errors={errors} />
 
             {/* 詳細情報 */}
-            <BeerDetailFields register={register} errors={errors} />
+            <BeerDetailFields 
+              register={register} 
+              errors={errors} 
+              setValue={setValue}
+              watch={watch}
+            />
 
             {/* 価格 */}
             <BeerPriceFields register={register} errors={errors} />

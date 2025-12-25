@@ -9,10 +9,10 @@ export function InstagramFloatingButton() {
       href="https://www.instagram.com/neighbor_2024/"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-12 h-12 bg-white dark:bg-zinc-800 rounded-full shadow-lg hover:scale-110 transition-transform duration-200 border border-zinc-200 dark:border-zinc-700"
+      className="fixed bottom-6 right-6 z-40 flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-lg hover:scale-110 transition-transform duration-200 border border-zinc-200"
       aria-label="Visit Instagram"
     >
-      <Instagram className="w-6 h-6 text-zinc-900 dark:text-white" />
+      <Instagram className="w-6 h-6 text-zinc-900" />
     </Link>
   );
 }

@@ -9,10 +9,6 @@ vi.mock("@/components/auth-button", () => ({
   AuthButton: () => <div data-testid="auth-button">AuthButton</div>,
 }));
 
-vi.mock("@/components/theme-switcher", () => ({
-  ThemeSwitcher: () => <div data-testid="theme-switcher">ThemeSwitcher</div>,
-}));
-
 describe("AdminLayout", () => {
   it("フッターに利用規約へのリンクが存在すること", () => {
     render(
@@ -42,7 +38,7 @@ describe("AdminLayout", () => {
     );
     // "v" で始まるテキストを探すか、具体的なバージョンを指定するか
     // ここでは "v1.4.1" を期待値とする
-    expect(screen.getByText("v1.4.3")).toBeInTheDocument();
+    expect(screen.getByText("v1.5.0")).toBeInTheDocument();
   });
 });
 

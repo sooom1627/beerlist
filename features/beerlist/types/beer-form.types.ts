@@ -7,6 +7,7 @@ export const beerFormSchema = z.object({
   brewery: z.string().min(1, "ブルワリー名は必須です"),
   name: z.string().min(1, "ビール名は必須です"),
   style: z.string().min(1, "スタイルは必須です"),
+  color: z.string().optional().nullable(),
   location: z.string().min(1, "場所は必須です"),
   description: z.string().min(1, "説明は必須です"),
   price: z.object({
