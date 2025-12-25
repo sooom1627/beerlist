@@ -69,7 +69,7 @@ export default function AdminLayout({
           >
             リリースノート
           </Link>
-          <span className="text-muted-foreground">v1.4.3</span>
+          <span className="text-muted-foreground">v1.5.0</span>
         </footer>
       </div>
     </main>

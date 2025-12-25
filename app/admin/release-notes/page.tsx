@@ -16,6 +16,24 @@ interface ReleaseItem {
 
 const releaseHistory: ReleaseItem[] = [
   {
+    date: "2025-12-25",
+    version: "v1.5.0",
+    changes: [
+      {
+        type: "feature",
+        description: "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面ではビールグラスアイコンで色を表示します。",
+      },
+      {
+        type: "enhancement",
+        description: "スクロールアニメーション：ビールカードがスクロール時にフェードインするアニメーション効果を追加しました。",
+      },
+      {
+        type: "refactor",
+        description: "ダークモードサポートの削除：UIの統一性向上のため、ダークモード関連のコンポーネントを整理しました。",
+      },
+    ],
+  },
+  {
     date: "2025-12-05",
     version: "v1.4.3",
     changes: [

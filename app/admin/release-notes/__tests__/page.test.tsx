@@ -11,16 +11,16 @@ describe("ReleaseNotesPage", () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it("最新バージョンv1.4.3が表示されること", () => {
+  it("最新バージョンv1.5.0が表示されること", () => {
     render(<ReleaseNotesPage />);
-    const versionBadge = screen.getByText("v1.4.3");
+    const versionBadge = screen.getByText("v1.5.0");
     expect(versionBadge).toBeInTheDocument();
   });
 
-  it("v1.4.3の変更内容が表示されること", () => {
+  it("v1.5.0の変更内容が表示されること", () => {
     render(<ReleaseNotesPage />);
     const description = screen.getByText(
-      "セキュリティアップデート：Next.js 16.0.7、React 19.2.1、react-dom 19.2.1へのアップグレードにより、CVE-2025-55182の脆弱性を修正しました。"
+      "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面ではビールグラスアイコンで色を表示します。"
     );
     expect(description).toBeInTheDocument();
   });
