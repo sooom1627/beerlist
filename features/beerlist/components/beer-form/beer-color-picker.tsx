@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   UseFormRegister,
   FieldErrors,
@@ -80,7 +80,6 @@ export const BeerColorPicker = ({
   const [customSrm, setCustomSrm] = useState<number>(5);
   const [isCustomMode, setIsCustomMode] = useState(false);
   const [isFreePickerMode, setIsFreePickerMode] = useState(false);
-  const colorInputRef = useRef<HTMLInputElement>(null);
 
   // フォームの値が変更されたら、それがプリセット/SRM/フリーかを判定する
   useEffect(() => {
@@ -134,10 +133,6 @@ export const BeerColorPicker = ({
     setIsFreePickerMode(false);
   };
 
-  const handleFreePickerClick = () => {
-    colorInputRef.current?.click();
-  };
-
   const handleFreeColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const color = e.target.value;
     setValue("color", color, {
@@ -183,36 +178,36 @@ export const BeerColorPicker = ({
         ))}
 
         {/* フリーカラーピッカー */}
-        <button
-          type="button"
-          onClick={handleFreePickerClick}
-          className={cn(
-            "w-9 h-9 rounded-full border-2 transition-all relative flex items-center justify-center",
-            "bg-white",
-            isFreePickerMode
-              ? "border-primary ring-2 ring-primary ring-offset-2 scale-110"
-              : "border-dashed border-gray-300 hover:border-gray-400 hover:scale-105"
-          )}
-          title="自由選択"
-        >
-          {isFreePickerMode ? (
-            <div
-              className="w-6 h-6 rounded-full border border-gray-200 shadow-sm"
-              style={{ backgroundColor: selectedColor || "#888" }}
-            />
-          ) : (
-            <Palette className="w-4 h-4 text-gray-400" />
-          )}
-          <span className="sr-only">自由選択</span>
-        </button>
-        <input
-          ref={colorInputRef}
-          type="color"
-          value={selectedColor || "#FFD700"}
-          onChange={handleFreeColorChange}
-          className="sr-only"
-          aria-label="カスタムカラー選択"
-        />
+        <div className="relative w-9 h-9">
+          {/* 表示用のボタン風要素 */}
+          <div
+            className={cn(
+              "w-9 h-9 rounded-full border-2 transition-all flex items-center justify-center",
+              "bg-white",
+              isFreePickerMode
+                ? "border-primary ring-2 ring-primary ring-offset-2 scale-110"
+                : "border-dashed border-gray-300 hover:border-gray-400 hover:scale-105"
+            )}
+            title="自由選択"
+          >
+            {isFreePickerMode ? (
+              <div
+                className="w-6 h-6 rounded-full border border-gray-200 shadow-sm"
+                style={{ backgroundColor: selectedColor || "#888" }}
+              />
+            ) : (
+              <Palette className="w-4 h-4 text-gray-400" />
+            )}
+          </div>
+          {/* 透明なinputをオーバーレイ */}
+          <input
+            type="color"
+            value={selectedColor || "#FFD700"}
+            onChange={handleFreeColorChange}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            aria-label="カスタムカラー選択"
+          />
+        </div>
       </div>
 
       {/* SRMスライダー（微調整用） */}
