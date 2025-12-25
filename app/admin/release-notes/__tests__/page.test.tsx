@@ -20,7 +20,7 @@ describe("ReleaseNotesPage", () => {
   it("v1.5.0の変更内容が表示されること", () => {
     render(<ReleaseNotesPage />);
     const description = screen.getByText(
-      "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面ではビールグラスアイコンで色を表示します。"
+      "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面では色を表示します。"
     );
     expect(description).toBeInTheDocument();
   });
