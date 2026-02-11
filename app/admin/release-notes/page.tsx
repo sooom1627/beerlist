@@ -16,6 +16,16 @@ interface ReleaseItem {
 
 const releaseHistory: ReleaseItem[] = [
   {
+    date: "2026-02-10",
+    version: "v1.5.1",
+    changes: [
+      {
+        type: "enhancement",
+        description: "テキストカラーの改善：テキストカラーをより明確にしました。",
+      },
+    ],
+  },
+  {
     date: "2025-12-25",
     version: "v1.5.0",
     changes: [

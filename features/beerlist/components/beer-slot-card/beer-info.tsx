@@ -19,10 +19,10 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
     <CardHeader className="pb-2 relative">
       {/* タップナンバー - 右上にミニマル配置 */}
       <div className="absolute top-3 right-3 text-right">
-        <span className="text-[9px] font-mono tracking-widest text-zinc-400 uppercase">
+        <span className="text-[9px] font-mono tracking-widest text-zinc-500 uppercase">
           Tap
         </span>
-        <div className="text-lg font-black text-zinc-200 leading-none -mt-0.5">
+        <div className="text-lg font-black text-zinc-600 leading-none -mt-0.5">
           {String(slotIndex + 1).padStart(2, "0")}
         </div>
       </div>

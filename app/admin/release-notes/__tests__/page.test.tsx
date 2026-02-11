@@ -11,16 +11,16 @@ describe("ReleaseNotesPage", () => {
     expect(heading).toBeInTheDocument();
   });
 
-  it("最新バージョンv1.5.0が表示されること", () => {
+  it("最新バージョンv1.5.1が表示されること", () => {
     render(<ReleaseNotesPage />);
-    const versionBadge = screen.getByText("v1.5.0");
+    const versionBadge = screen.getByText("v1.5.1");
     expect(versionBadge).toBeInTheDocument();
   });
 
-  it("v1.5.0の変更内容が表示されること", () => {
+  it("v1.5.1の変更内容が表示されること", () => {
     render(<ReleaseNotesPage />);
     const description = screen.getByText(
-      "ビールカラー機能の追加：各ビールに色を設定できるカラーピッカーを管理画面に追加しました。公開画面では色を表示します。"
+      "テキストカラーの改善：テキストカラーをより明確にしました。"
     );
     expect(description).toBeInTheDocument();
   });

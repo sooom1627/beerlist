@@ -50,10 +50,10 @@ export function BeerCard({ beer, index }: BeerCardProps) {
     >
       {/* タップナンバー - 右上にモノクロでさりげなく */}
       <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 text-right">
-        <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-400 uppercase">
+        <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
           Tap
         </span>
-        <div className="text-2xl sm:text-3xl font-black text-zinc-200 leading-none -mt-0.5">
+        <div className="text-2xl sm:text-3xl font-black text-zinc-600 leading-none -mt-1">
           {String(beer.tapNumber).padStart(2, "0")}
         </div>
       </div>
