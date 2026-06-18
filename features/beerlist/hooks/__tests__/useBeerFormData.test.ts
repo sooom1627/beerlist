@@ -19,6 +19,7 @@ describe('useBeerFormData', () => {
         isAvailable: true,
         createdAt: '2024-01-01',
         isNew: false,
+        isEventBeer: false,
       };
 
       const result = getDefaultBeerFormValues(beer);
@@ -36,6 +37,7 @@ describe('useBeerFormData', () => {
         isAvailable: true,
         createdAt: '2024-01-01',
         isNew: false,
+        isEventBeer: false,
       });
     });
 
@@ -55,6 +57,7 @@ describe('useBeerFormData', () => {
         isAvailable: true,
         createdAt: '',
         isNew: false,
+        isEventBeer: false,
       });
     });
 
@@ -74,6 +77,7 @@ describe('useBeerFormData', () => {
         isAvailable: true,
         createdAt: '2024-01-01',
         isNew: false,
+        isEventBeer: false,
       };
 
       const result = getDefaultBeerFormValues(beer);
@@ -83,7 +87,7 @@ describe('useBeerFormData', () => {
       expect(result.price).not.toBe(beer.price);
     });
 
-    it('isAvailableとisNewのフラグが正しくコピーされる', () => {
+    it('isAvailable、isNew、isEventBeerのフラグが正しくコピーされる', () => {
       const beer: Beer = {
         id: '1',
         tapNumber: 1,
@@ -99,12 +103,14 @@ describe('useBeerFormData', () => {
         isAvailable: false,
         createdAt: '2024-01-01',
         isNew: true,
+        isEventBeer: true,
       };
 
       const result = getDefaultBeerFormValues(beer);
 
       expect(result.isAvailable).toBe(false);
       expect(result.isNew).toBe(true);
+      expect(result.isEventBeer).toBe(true);
     });
   });
 });

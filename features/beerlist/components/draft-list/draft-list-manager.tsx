@@ -97,6 +97,7 @@ export function DraftListManager() {
         tapNumber: 0, // Dummy value
         isAvailable: true, // Dummy value
         isNew: false, // Dummy value
+        isEventBeer: false, // Dummy value
       }
     : null;
 

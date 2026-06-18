@@ -18,6 +18,7 @@ export const beerFormSchema = z.object({
   isAvailable: z.boolean(),
   createdAt: z.string(),
   isNew: z.boolean(),
+  isEventBeer: z.boolean(),
 }).refine(
   (data) => {
     // 新規作成時（idがない場合）は画像ファイルまたは画像URLが必要

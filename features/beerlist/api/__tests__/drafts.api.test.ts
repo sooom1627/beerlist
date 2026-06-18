@@ -197,6 +197,7 @@ describe('drafts.api', () => {
             price_pint: 800,
             is_available: true,
             isNew: false,
+            is_event_beer: false,
             created_at: '2023-01-02'
         };
 
@@ -213,6 +214,7 @@ describe('drafts.api', () => {
             // default values for beer
             is_available: true,
             isNew: true, // Default to true or false? Let's say true for new beer on tap
+            is_event_beer: false,
         }), { onConflict: "tap_number" });
     });
   });

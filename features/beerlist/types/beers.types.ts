@@ -15,6 +15,7 @@ export const beerDBSchema = z.object({
   alcohol: z.number().min(0).max(100),
   is_available: z.boolean(),
   isNew: z.boolean(),
+  is_event_beer: z.boolean().default(false),
   created_at: z.string(),
   color: z.string().nullable().optional(),
 });
@@ -39,14 +40,15 @@ export type Beer = {
   isAvailable: boolean;
   createdAt: string;
   isNew: boolean;
+  isEventBeer: boolean;
 };
 
-export type DraftBeer = Omit<Beer, "id" | "tapNumber" | "isAvailable" | "isNew" | "createdAt"> & {
+export type DraftBeer = Omit<Beer, "id" | "tapNumber" | "isAvailable" | "isNew" | "isEventBeer" | "createdAt"> & {
   id: number;
   createdAt: string;
 };
 
-export type DraftBeerDB = Omit<BeerDB, "id" | "tap_number" | "is_available" | "isNew" | "created_at"> & {
+export type DraftBeerDB = Omit<BeerDB, "id" | "tap_number" | "is_available" | "isNew" | "is_event_beer" | "created_at"> & {
   id: number;
   created_at: string;
 };
@@ -93,5 +95,6 @@ export function transformBeerDBToBeer(beerDB: BeerDB): Beer {
     isAvailable: beerDB.is_available,
     createdAt: beerDB.created_at,
     isNew: beerDB.isNew,
+    isEventBeer: beerDB.is_event_beer,
   };
 }

@@ -115,6 +115,7 @@ export const applyDraftToSlot = async (draft: DraftBeer, slotNumber: number): Pr
     alcohol: draft.alcohol,
     is_available: true, // Default to available when applying to slot
     isNew: true,       // Default to new when applying to slot
+    is_event_beer: false,
   };
 
   const { data, error } = await supabase
