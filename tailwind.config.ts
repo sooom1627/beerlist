@@ -57,6 +57,15 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      keyframes: {
+        sweep: {
+          "0%": { transform: "translateX(-180%) skewX(-12deg)" },
+          "55%, 100%": { transform: "translateX(320%) skewX(-12deg)" },
+        },
+      },
+      animation: {
+        sweep: "sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

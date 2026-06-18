@@ -63,8 +63,8 @@ export function BeerCard({ beer, index }: BeerCardProps) {
         {/* バッジエリア（画像の上に通常フローで配置） */}
         {(beer.isNew || beer.isEventBeer) && (
           <div className="flex flex-wrap items-center gap-2.5 pr-16">
-            {beer.isNew && <NewBadge />}
             {beer.isEventBeer && <EventBadge />}
+            {beer.isNew && <NewBadge />}
           </div>
         )}
 

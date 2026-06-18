@@ -10,7 +10,7 @@ export function NewBadge() {
         <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
       </span>
       <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] text-amber-600 uppercase">
-        New Tap!
+        New!
       </span>
     </div>
   );
