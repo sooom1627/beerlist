@@ -1,5 +1,7 @@
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { BeerImage } from "../common";
+import { NewBadge } from "./new-badge";
+import { EventBadge } from "./event-badge";
 import type { Beer } from "../../types/beers.types";
 
 interface BeerInfoProps {
@@ -30,8 +32,8 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
       {/* バッジ（画像の上に通常フローで配置） */}
       {(beer.isNew || beer.isEventBeer) && (
         <div className="flex flex-wrap items-center gap-2.5 mb-3 pr-12">
-          {beer.isNew && <NewBadge />}
           {beer.isEventBeer && <EventBadge />}
+          {beer.isNew && <NewBadge />}
         </div>
       )}
 
