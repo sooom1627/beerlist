@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { PriceDisplay } from "./common";
-import { EmptySlot, BeerInfo, BeerActions, NewBadge } from "./beer-slot-card/index";
+import { EmptySlot, BeerInfo, BeerActions, NewBadge, EventBadge } from "./beer-slot-card/index";
 import type { Beer } from "../types/beers.types";
 
 interface BeerSlotCardProps {
@@ -10,6 +10,7 @@ interface BeerSlotCardProps {
   slotIndex: number;
   onToggleAvailability: () => void;
   onToggleNew: () => void;
+  onToggleEventBeer: () => void;
   onEdit: () => void;
   onReplace: () => void;
   onLoadFromDraft: () => void;
@@ -28,6 +29,7 @@ export function BeerSlotCard({
   slotIndex,
   onToggleAvailability,
   onToggleNew,
+  onToggleEventBeer,
   onEdit,
   onReplace,
   onLoadFromDraft,
@@ -50,9 +52,6 @@ export function BeerSlotCard({
         !beer.isAvailable ? "opacity-60 grayscale" : ""
       }`}
     >
-      {/* 新着バッジ */}
-      {beer.isNew && <NewBadge />}
-
       {/* ビール情報 */}
       <BeerInfo beer={beer} slotIndex={slotIndex} />
 
@@ -77,6 +76,7 @@ export function BeerSlotCard({
           beer={beer}
           onToggleAvailability={onToggleAvailability}
           onToggleNew={onToggleNew}
+          onToggleEventBeer={onToggleEventBeer}
           onEdit={onEdit}
           onReplace={onReplace}
           onLoadFromDraft={onLoadFromDraft}

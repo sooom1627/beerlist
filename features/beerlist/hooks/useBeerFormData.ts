@@ -25,6 +25,7 @@ export function getDefaultBeerFormValues(beer: Beer | null): BeerFormData {
       isAvailable: beer.isAvailable,
       createdAt: beer.createdAt,
       isNew: beer.isNew,
+      isEventBeer: beer.isEventBeer,
     };
   }
 
@@ -44,6 +45,7 @@ export function getDefaultBeerFormValues(beer: Beer | null): BeerFormData {
     isAvailable: true,
     createdAt: "",
     isNew: false,
+    isEventBeer: false,
   };
 }
 

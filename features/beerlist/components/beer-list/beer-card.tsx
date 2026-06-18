@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { BeerImage, PriceDisplay } from "../common";
+import { EventBadge, NewBadge } from "../beer-slot-card/index";
 import type { Beer } from "../../types/beers.types";
 
 interface BeerCardProps {
@@ -58,20 +59,15 @@ export function BeerCard({ beer, index }: BeerCardProps) {
         </div>
       </div>
 
-      {/* 新着バッジ */}
-      {beer.isNew && (
-        <div className="absolute top-0 left-3 sm:top-0 sm:left-4 z-10 flex items-center gap-1.5">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
-          </span>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-[0.15em] text-amber-600 uppercase">
-            New Tap!
-          </span>
-        </div>
-      )}
+      <div className="relative p-4 sm:p-5 space-y-3 sm:space-y-4 pt-3 sm:pt-4">
+        {/* バッジエリア（画像の上に通常フローで配置） */}
+        {(beer.isNew || beer.isEventBeer) && (
+          <div className="flex flex-wrap items-center gap-2.5 pr-16">
+            {beer.isEventBeer && <EventBadge />}
+            {beer.isNew && <NewBadge />}
+          </div>
+        )}
 
-      <div className="relative p-4 sm:p-5 space-y-3 sm:space-y-4">
         {/* ヘッダー: 画像 + 基本情報 */}
         <div className="flex items-start gap-3 sm:gap-4">
           {/* 画像エリア */}

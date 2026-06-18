@@ -94,6 +94,32 @@ export function useBeerSlotManagement(
   };
 
   /**
+   * イベントビールステータスを切り替え
+   */
+  const handleToggleEventBeer = async (slotIndex: number) => {
+    const beer = beerSlots?.[slotIndex];
+    if (beer) {
+      try {
+        const { createdAt, ...beerData } = beer;
+        await upsertBeerMutation.mutateAsync({
+          ...beerData,
+          isEventBeer: !beer.isEventBeer,
+        });
+        onNotify?.({
+          type: 'success',
+          message: 'イベントビールステータスを更新しました',
+        });
+      } catch (error) {
+        console.error("Failed to toggle event beer status:", error);
+        onNotify?.({
+          type: 'error',
+          message: 'イベントビールステータスの更新に失敗しました',
+        });
+      }
+    }
+  };
+
+  /**
    * 編集モードでフォームを開く
    */
   const handleEdit = (slotIndex: number) => {
@@ -139,6 +165,7 @@ export function useBeerSlotManagement(
           alcohol: data.alcohol,
           isAvailable: data.isAvailable,
           isNew: data.isNew,
+          isEventBeer: data.isEventBeer,
         });
         setEditingSlotIndex(null);
         setIsFormOpen(false);
@@ -183,6 +210,7 @@ export function useBeerSlotManagement(
     currentBeer: getCurrentBeer(),
     handleToggleAvailability,
     handleToggleNew,
+    handleToggleEventBeer,
     handleEdit,
     handleReplace,
     handleFormSubmit,

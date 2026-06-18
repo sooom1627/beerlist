@@ -1,5 +1,7 @@
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { BeerImage } from "../common";
+import { NewBadge } from "./new-badge";
+import { EventBadge } from "./event-badge";
 import type { Beer } from "../../types/beers.types";
 
 interface BeerInfoProps {
@@ -16,7 +18,7 @@ interface BeerInfoProps {
  */
 export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
   return (
-    <CardHeader className="pb-2 relative">
+    <CardHeader className="pb-2 relative pt-4 px-6">
       {/* タップナンバー - 右上にミニマル配置 */}
       <div className="absolute top-3 right-3 text-right">
         <span className="text-[9px] font-mono tracking-widest text-zinc-500 uppercase">
@@ -27,8 +29,18 @@ export function BeerInfo({ beer, slotIndex }: BeerInfoProps) {
         </div>
       </div>
 
+      {/* バッジ（画像の上に通常フローで配置） */}
+      {(beer.isNew || beer.isEventBeer) && (
+        <div className="flex flex-wrap items-center gap-2.5 mb-3 pr-12">
+          {beer.isEventBeer && <EventBadge />}
+          {beer.isNew && <NewBadge />}
+        </div>
+      )}
+
       <div className="flex items-start gap-3 pr-12">
-        <BeerImage src={beer.image} alt={beer.name} size="small" />
+        <div className="relative shrink-0">
+          <BeerImage src={beer.image} alt={beer.name} size="small" />
+        </div>
 
         <div className="flex-1 min-w-0 space-y-1">
           <CardTitle className="text-sm font-bold tracking-tight line-clamp-1 text-zinc-900">

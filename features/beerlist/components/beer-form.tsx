@@ -81,6 +81,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       isAvailable: beer.isAvailable,
       createdAt: beer.createdAt,
       isNew: beer.isNew,
+      isEventBeer: beer.isEventBeer,
     } : {
       image: "",
       brewery: "",
@@ -97,6 +98,7 @@ export function BeerForm({ beer, isOpen, onClose, onSubmit }: BeerFormProps) {
       isAvailable: true,
       createdAt: "",
       isNew: false,
+      isEventBeer: false,
     },
   });
 

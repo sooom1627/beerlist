@@ -34,6 +34,7 @@ describe('useBeerSlotManagement', () => {
       isAvailable: true,
       createdAt: '2024-01-01',
       isNew: false,
+      isEventBeer: false,
     },
     null,
   ];
@@ -230,6 +231,41 @@ describe('useBeerSlotManagement', () => {
       });
     });
 
+    describe('handleToggleEventBeer', () => {
+      it('成功時にonNotifyが呼ばれる', async () => {
+        const onNotify = vi.fn();
+        const { result } = renderHook(() =>
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleEventBeer(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'success',
+          message: 'イベントビールステータスを更新しました',
+        });
+      });
+
+      it('失敗時にonNotifyがエラーで呼ばれる', async () => {
+        mockMutateAsync.mockRejectedValueOnce(new Error('API Error'));
+        const onNotify = vi.fn();
+        const { result } = renderHook(() =>
+          useBeerSlotManagement(mockBeerSlots, { onNotify })
+        );
+
+        await act(async () => {
+          await result.current.handleToggleEventBeer(0);
+        });
+
+        expect(onNotify).toHaveBeenCalledWith({
+          type: 'error',
+          message: 'イベントビールステータスの更新に失敗しました',
+        });
+      });
+    });
+
     describe('handleFormSubmit', () => {
       const mockFormData = {
         id: '1',
@@ -243,6 +279,7 @@ describe('useBeerSlotManagement', () => {
         alcohol: 6.0,
         isAvailable: true,
         isNew: true,
+        isEventBeer: false,
       };
 
       it('更新成功時にonNotifyが呼ばれる', async () => {

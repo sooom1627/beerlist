@@ -52,6 +52,7 @@ export default function AdminPage() {
     currentBeer,
     handleToggleAvailability,
     handleToggleNew,
+    handleToggleEventBeer,
     handleEdit,
     handleReplace,
     handleFormSubmit,
@@ -108,6 +109,7 @@ export default function AdminPage() {
                 slotIndex={index}
                 onToggleAvailability={() => handleToggleAvailability(index)}
                 onToggleNew={() => handleToggleNew(index)}
+                onToggleEventBeer={() => handleToggleEventBeer(index)}
                 onEdit={() => handleEdit(index)}
                 onReplace={() => handleReplace(index)}
                 onLoadFromDraft={() => handleOpenDraftDialog(index)}
